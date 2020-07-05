@@ -1,0 +1,101 @@
+#loader{
+  position: fixed;
+  left:0;
+  top:0;
+	width: 100%;
+	height: 100vh;
+  background:black url('https://icon-library.net/images/loading-gif-icon/loading-gif-icon-28.jpg'); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 5000;
+  display: block;
+  margin: 0 auto;
+}
+
+.leaflet-bar button, .leaflet-bar button:hover {
+    background-color: powderblue;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 8vw;
+    height: 8vh;
+    line-height: 26px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+} 
+#side-bar {
+    opacity: 0.8;
+    width:70vw;
+}
+#mapdiv {
+    height: 100vh;
+    width:100vw;
+    left: 15px;
+    bottom: 0px;
+}
+#overallRow {
+    height: 100vh;
+    width:100vw;
+}
+.col-xs-12,.col-xs-6,.col-xs-4{
+    padding:3px
+}
+
+/* Bus Stop Selection */
+#divProject{
+    background-color: beige;
+    padding: 10px;
+    border: 2px solid grey;
+    border-radius: 5px;
+}
+
+/* Filtering of Bus Stop Loading */
+#divProject2{
+    background-color: lightcyan;
+    padding: 10px;
+    border: 2px solid grey;
+    border-radius: 5px;
+}
+
+.errorMsg {
+    padding:0;
+    text-align:center;
+    background-color: darksalmon;
+
+}
+
+#BusArrival_Info {
+    word-wrap: break-word;
+    overflow-x: auto;
+    position: relative;
+    padding-top: 30px;
+    text-align:center;
+}
+
+
+#divProject4 {
+    position: relative;
+    left: 0em;
+    top: 0em;
+    border: 2px solid grey;
+    border-radius: 5px;
+}
+
+#Time_FilterBS {
+    position: relative;
+    left: 0em;
+    font-size: 14px;
+    top: 0em;
+}
+
+.svg-container {
+    position: relative;
+    width: 100%;
+    height: 480px;
+}
+
+#heatMapLoading {
+    position: relative;
+    top: 2em;
+}
