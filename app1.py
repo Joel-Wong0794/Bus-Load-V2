@@ -19,9 +19,10 @@ BusService_List["Bus Service No."] = BusService_List["Bus Service No."].astype(s
 # List of Bus Stops
 df_BusStop = BusStopList_df()
 
-# Pre-load Ridership Data
-with open(dir_path+"/static/data/LTAMall_Ridership_Data.geojson") as f:
-    ridership_data = geojson.load(f)
+# # Pre-load Ridership Data
+# with open(dir_path+"/static/data/LTAMall_Ridership_Data.geojson") as f:
+#     ridership_data = geojson.load(f)
+
 
 app = Flask(__name__)
 
@@ -32,14 +33,15 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+""" 
 #-------------------------------------------
 # GET: /Ridership
 #-------------------------------------------
-
 @app.route('/ridership_data')
 def get_ridershipData():
 
     return jsonify({'data':ridership_data})
+ """
 
 #-------------------------------------------
 # Fetch User BSCODE Input

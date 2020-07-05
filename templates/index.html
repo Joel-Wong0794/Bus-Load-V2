@@ -618,15 +618,17 @@
                 // Removes the previous content of the HeatMap Elements.    
                 $("#heatMapLoading").empty();
 
+                /*
                 // Use Async to optain json from extension:"/ridership_data". This was preloaded within The Flask app before the webpage.
                 httpGetAsync(window.location.origin+'/ridership_data', function(response){
                     var json = response["data"];
-            /*
+                */
+            
             // Reading in Geojson
             //https://stackoverflow.com/questions/7346563/loading-local-json-file
             $.getJSON("{{url_for('static', filename='/data/LTAMall_Ridership_Data.geojson')}}", function(json) 
                 {
-            */
+            
                     var i;
                     var data_raw = {};
                     // Loops through the entire geoJson file.
