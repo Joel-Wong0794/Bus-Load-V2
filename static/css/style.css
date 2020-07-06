@@ -24,8 +24,8 @@
     width:100%;
 }
 #mapdiv {
-    height: 93vh;
-    width:100vw;
+    height: 90vh;
+    width:100%;
     left: 15px;
     bottom: 0px;
 }
@@ -36,8 +36,8 @@
 }
 
 #overallRow {
-    height: 93vh;
-    width:100vw;
+    height: 90vh;
+    width:100%;
 }
 .col-xs-12,.col-xs-6,.col-xs-4{
     padding:3px
