@@ -17,7 +17,7 @@
     border: none;
     border-bottom: 1px solid #ccc;
     width: 8vw;
-    height: 8vh;
+    height: 4vh;
     line-height: 26px;
     display: block;
     text-align: center;
@@ -25,9 +25,16 @@
     color: black;
 } 
 
+.close{
+    position: inherit;
+    z-index: 4000;
+    right: 20vw;
+    outline: none;
+}
+
 #side-bar {
     opacity: 0.8;
-    width:100%;
+    width:80%;
 }
 #mapdiv {
     height: 100vh;

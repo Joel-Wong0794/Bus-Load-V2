@@ -343,7 +343,7 @@
                 // ***** Custom Zoom Slider *****
                 ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
                 ctlMousePosition = L.control.mousePosition().addTo(mymap);
-                ctlEasyButton = L.easyButton("<div style ='padding-top:10px position:absolute'><img src='{{url_for('static',filename='src/icons/open-menu.png')}}' width = '30px'>MENU</div>", function(){
+                ctlEasyButton = L.easyButton("<div style ='padding-top:10px position:inherit'><img src='{{url_for('static',filename='src/icons/open-menu.png')}}' width = '30px'>    MENU</div>", function(){
                     ctlSidebar.toggle();
                 }).addTo(mymap);
                 // ***** Sidebar V1 *****
