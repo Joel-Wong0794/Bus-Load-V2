@@ -12,19 +12,6 @@
     margin: 0 auto;
   }
   
-.leaflet-bar button, .leaflet-bar button:hover, .easy-button-button{
-    background-color: powderblue;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    width: 8vw;
-    height: 4vh;
-    line-height: 26px;
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    color: black;
-} 
-
 .close{
     position: inherit;
     z-index: 4000;
@@ -34,16 +21,22 @@
 
 #side-bar {
     opacity: 0.8;
-    width:80%;
+    width:100%;
 }
 #mapdiv {
-    height: 100vh;
+    height: 93vh;
     width:100vw;
     left: 15px;
     bottom: 0px;
 }
+
+#navbar{
+    height: 7vh;
+    width:100vw;
+}
+
 #overallRow {
-    height: 100vh;
+    height: 93vh;
     width:100vw;
 }
 .col-xs-12,.col-xs-6,.col-xs-4{
@@ -106,4 +99,11 @@
 #heatMapLoading {
     position: relative;
     top: 2em;
+}
+
+#ActivateMenu{
+    z-index: 3000;
+    position: absolute;
+    right: 5vw;
+    width: 30vw;
 }

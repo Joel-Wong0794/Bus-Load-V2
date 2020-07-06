@@ -83,6 +83,12 @@
     </head>
     <body>
         <div id="loader"></div>
+
+        <nav id="navbar" class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Bus Ridership</a>
+            <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Menu</button>
+        </nav>
+
         <div class="row" id = "overallRow">
             <div id= "side-bar" class = "col-md-12">
                 <button id = "btnLocate" class = 'btn btn-primary btn-block'>My Location</button><br>
@@ -175,6 +181,7 @@
             </div> 
             
             <div id = "mapdiv" class = "col-md-12">
+                
             </div> 
 
         </div>
@@ -343,9 +350,11 @@
                 // ***** Custom Zoom Slider *****
                 ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
                 ctlMousePosition = L.control.mousePosition().addTo(mymap);
-                ctlEasyButton = L.easyButton("<div style ='padding-top:10px position:inherit'><img src='{{url_for('static',filename='src/icons/open-menu.png')}}' width = '30px'>    MENU</div>", function(){
+
+                // Menu Toggle to activate sidebar
+                $("#ActivateMenu").click(function(){
                     ctlSidebar.toggle();
-                }).addTo(mymap);
+                });
                 // ***** Sidebar V1 *****
                 ctlSidebar = L.control.sidebar('side-bar').addTo(mymap);
                 ctlMeasure = L.control.polylineMeasure().addTo(mymap);
