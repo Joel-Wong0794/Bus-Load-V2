@@ -1,18 +1,18 @@
 #loader{
-  position: fixed;
-  left:0;
-  top:0;
-	width: 100%;
-	height: 100vh;
-  background:black url('https://icon-library.net/images/loading-gif-icon/loading-gif-icon-28.jpg'); 
-  background-size: contain;
-  background-repeat: no-repeat;
-  z-index: 5000;
-  display: block;
-  margin: 0 auto;
-}
-
-.leaflet-bar.button, .leaflet-bar.button:hover {
+    position: fixed;
+    left:0;
+    top:0;
+      width: 100%;
+      height: 100vh;
+    background:black url('https://icon-library.net/images/loading-gif-icon/loading-gif-icon-28.jpg'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 5000;
+    display: block;
+    margin: 0 auto;
+  }
+  
+.leaflet-bar button, .leaflet-bar button:hover, .easy-button-button{
     background-color: powderblue;
     border: none;
     border-bottom: 1px solid #ccc;
@@ -24,9 +24,10 @@
     text-decoration: none;
     color: black;
 } 
+
 #side-bar {
     opacity: 0.8;
-    width:70vw;
+    width:100%;
 }
 #mapdiv {
     height: 100vh;
