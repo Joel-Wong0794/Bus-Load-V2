@@ -24,7 +24,7 @@
     width:100%;
 }
 #mapdiv {
-    height: 90vh;
+    height: 85vh;
     width:100%;
     left: 15px;
     bottom: 0px;
@@ -36,7 +36,7 @@
 }
 
 #overallRow {
-    height: 90vh;
+    height: 85vh;
     width:100%;
 }
 .col-xs-12,.col-xs-6,.col-xs-4{

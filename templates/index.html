@@ -356,7 +356,7 @@
                     ctlSidebar.toggle();
                 });
                 // ***** Sidebar V1 *****
-                ctlSidebar = L.control.sidebar('side-bar').addTo(mymap);
+                ctlSidebar = L.control.sidebar('side-bar',{closeButton:false,autoPan:false}).addTo(mymap);
                 ctlMeasure = L.control.polylineMeasure().addTo(mymap);
 
                 // ***** OpenCage Search Location *****
@@ -465,7 +465,8 @@
                                 flyTo:true,
                                 initialZoomLevel: 18,
                                 enableHighAccuracy: true,
-                                showCompass: true
+                                showCompass: true,
+                                drawMarker:true
                         }
                     });
                 });
@@ -528,10 +529,12 @@
                     var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
                     $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
                     $('#btnFindBS').click();
+                    ctlSidebar.show();
                 }else{
                     var cleaned_clicked_BSCode = clicked_BSCode.toString()
                     $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
                     $('#btnFindBS').click();
+                    ctlSidebar.show();
                 }
             }
 
