@@ -12,7 +12,7 @@
   margin: 0 auto;
 }
 
-.leaflet-bar button, .leaflet-bar button:hover {
+.leaflet-bar.button, .leaflet-bar.button:hover {
     background-color: powderblue;
     border: none;
     border-bottom: 1px solid #ccc;
