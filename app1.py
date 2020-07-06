@@ -19,10 +19,9 @@ BusService_List["Bus Service No."] = BusService_List["Bus Service No."].astype(s
 # List of Bus Stops
 df_BusStop = BusStopList_df()
 
-# # Pre-load Ridership Data
-# with open(dir_path+"/static/data/LTAMall_Ridership_Data.geojson") as f:
-#     ridership_data = geojson.load(f)
-
+# Pre-load Ridership Data
+with open(dir_path+"/static/data/LTAMall_Ridership_Data.geojson") as f:
+    ridership_data = geojson.load(f)
 
 app = Flask(__name__)
 
@@ -33,16 +32,6 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-""" 
-#-------------------------------------------
-# GET: /Ridership
-#-------------------------------------------
-@app.route('/ridership_data')
-def get_ridershipData():
-
-    return jsonify({'data':ridership_data})
- """
-
 #-------------------------------------------
 # Fetch User BSCODE Input
 #-------------------------------------------
@@ -50,7 +39,9 @@ def get_ridershipData():
 # https://www.youtube.com/watch?v=QKcVjdLEX_s
 @app.route('/BusArrival', methods=['POST'])
 def BusArrival_Function():
-
+    #-------------------------------------------
+    # Bus Arrival Portion
+    #-------------------------------------------
     req = request.get_json() # When /BusArrival receives POST.
     print(req)
     
@@ -100,15 +91,37 @@ def BusArrival_Function():
     Package_List = df_BusArrival["Package Name"].to_list()
     Direction_List = df_BusArrival["Description"].to_list()
 
+    #-------------------------------------------
+
+    #-------------------------------------------
+    # Plotly z list -  based on BSCODE selected
+    #-------------------------------------------
+    zList_raw = {}
+    for i in range(len(ridership_data["features"])):
+        # WEEKDAY
+        if ((ridership_data['features'][i]['properties']['PT_CODE']==req["BSCODE"]) and (ridership_data['features'][i]['properties']['DAY_TYPE']=="WEEKDAY")):
+            tapIn_Identifier = "tapIn"+"WEEKDAY" + "_"+str(ridership_data.features[i]['properties']["TIME_PER_HOUR"])
+            zList_raw[tapIn_Identifier] = ridership_data.features[i]['properties']["TOTAL_TAP_IN_VOLUME"]
+        # WEEKENDS/PH
+        elif ((ridership_data['features'][i]['properties']['PT_CODE']==req["BSCODE"]) and (ridership_data['features'][i]['properties']['DAY_TYPE']=="WEEKENDS/HOLIDAY")):
+            tapIn_Identifier = "tapIn"+"WEEKENDS/HOLIDAY" + "_"+str(ridership_data.features[i]['properties']["TIME_PER_HOUR"])
+            zList_raw[tapIn_Identifier] = ridership_data.features[i]['properties']["TOTAL_TAP_IN_VOLUME"]
+    #-------------------------------------------
+
+    #-------------------------------------------
+    # Construct json Response
+    #-------------------------------------------
     res = make_response(jsonify(
         {
             "Number_Svcs":Number_Svcs,
             "Services":Service_List,
             "ArrivalTime":ArrivalTime_List,
             "Packages":Package_List,
-            "Direction":Direction_List
+            "Direction":Direction_List,
+            "zList_raw":zList_raw
 
         }),200)
+    #-------------------------------------------
 
     return res # Return back to JavaScript for Bus Arrival Data for selected BSCode.
 

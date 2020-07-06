@@ -618,117 +618,6 @@
                 // Removes the previous content of the HeatMap Elements.    
                 $("#heatMapLoading").empty();
 
-                /*
-                // Use Async to optain json from extension:"/ridership_data". This was preloaded within The Flask app before the webpage.
-                httpGetAsync(window.location.origin+'/ridership_data', function(response){
-                    var json = response["data"];
-                */
-            
-            // Reading in Geojson
-            //https://stackoverflow.com/questions/7346563/loading-local-json-file
-            $.getJSON("{{url_for('static', filename='/data/LTAMall_Ridership_Data.geojson')}}", function(json) 
-                {
-            
-                    var i;
-                    var data_raw = {};
-                    // Loops through the entire geoJson file.
-                    for (i = 0; i<json.features.length;i++){
-                        // WEEKDAY
-                        if (json['features'][i]['properties']['PT_CODE'] === (BSCODE)
-                        && json['features'][i]['properties']['DAY_TYPE'] === "WEEKDAY"){
-                            var identifier = "WEEKDAY" + "_"+(json.features[i]['properties']["TIME_PER_HOUR"]).toString();
-                            var tapIn_Identifier = "tapIn"+"WEEKDAY" + "_"+(json.features[i]['properties']["TIME_PER_HOUR"]).toString();
-                            //data_raw[identifier] =json.features[i]['properties']["TOTAL_TAP_IN_VOLUME"]-json.features[i]['properties']["TOTAL_TAP_OUT_VOLUME"];
-                            data_raw[tapIn_Identifier] =json.features[i]['properties']["TOTAL_TAP_IN_VOLUME"];
-                        }
-                        // WEEKENDS/PH
-                        if (json['features'][i]['properties']['PT_CODE'] === (BSCODE)
-                        && json['features'][i]['properties']['DAY_TYPE'] === "WEEKENDS/HOLIDAY"){
-                            var identifier = "WEEKENDS/HOLIDAY" + "_"+(json.features[i]['properties']["TIME_PER_HOUR"]).toString();
-                            var tapIn_Identifier = "tapIn"+"WEEKENDS/HOLIDAY" + "_"+(json.features[i]['properties']["TIME_PER_HOUR"]).toString();                            
-                            //data_raw[identifier] =json.features[i]['properties']["TOTAL_TAP_IN_VOLUME"]-json.features[i]['properties']["TOTAL_TAP_OUT_VOLUME"];
-                            data_raw[tapIn_Identifier] =json.features[i]['properties']["TOTAL_TAP_IN_VOLUME"];
-                        }
-                    }
-                    var z_list = [];
-                    for (i = 23; i >=0; i--){
-                        var z_TempList = [];
-                        if (typeof data_raw["tapInWEEKDAY_"+i] !== 'undefined'){
-                            z_TempList.push(data_raw["tapInWEEKDAY_"+i]);
-                        } else {
-                            z_TempList.push(null);
-                        }
-                        if (typeof data_raw["tapInWEEKENDS/HOLIDAY_"+i] !== 'undefined'){
-                            z_TempList.push(data_raw["tapInWEEKENDS/HOLIDAY_"+i]);
-                        } else {
-                            z_TempList.push(null);
-                        }
-                        /*
-                        if (typeof data_raw["WEEKDAY_"+i] !== 'undefined'){
-                            z_TempList.push(data_raw["WEEKDAY_"+i]);
-                        } else {
-                            z_TempList.push(null);
-                        }
-                        if (typeof data_raw["WEEKENDS/HOLIDAY_"+i] !== 'undefined'){
-                            z_TempList.push(data_raw["WEEKENDS/HOLIDAY_"+i]);
-                        } else {
-                            z_TempList.push(null);
-                        }
-                        */
-                        z_list.push(z_TempList)
-                    }
-                    var data = [
-                        {
-                            z: z_list,
-                            x: ['WkDay','WkEnds/PH'],
-                            y: [
-                                        '11PM',
-                                        '10PM',
-                                        '9PM',
-                                        '8PM',
-                                        '7PM',
-                                        '6PM',
-                                        '5PM',
-                                        '4PM',
-                                        '3PM',
-                                        '2PM',
-                                        '1PM',
-                                        '12PM',
-                                        '11AM',
-                                        '10AM',
-                                        '9AM',
-                                        '8AM',
-                                        '7AM', 
-                                        '6AM',
-                                        '5AM',
-                                        '4AM',
-                                        '3AM',
-                                        '2AM',
-                                        '1AM',
-                                        '12AM'
-                            ],
-                            type: 'heatmap',
-                            colorscale: 'YlOrRd_r',
-                            hoverongaps: false,
-                            showscale: false,
-                        }
-                    ];
-                    var layout = {
-                        //plot_bgcolor:"black",
-                        paper_bgcolor:"#FFF3",
-                        title: {
-                            text:'Hourly Tap-In',
-                            font: {
-                            family: 'Calibri',
-                            size: 24
-                            },
-                            xref: 'paper',
-                            x: 0.5,
-                        }
-                    };
-                    var config = {responsive: true,displayModeBar: false}
-                    Plotly.newPlot('heatMapLoading', data,layout,config);
-            });
                 fetch(`${window.origin}/BusArrival`, {
                     method: "POST",
                     credentials: "include",
@@ -749,6 +638,7 @@
                         response.json().then(function(data){
                             var i,svcs;
                             var text = ""; 
+                            // Bus Arrival Table
                             for (i=0;i<data["Number_Svcs"];i++) {
                                 if(i === 0){
                                     // To register header and the first row
@@ -770,6 +660,75 @@
 
                             }
                             document.getElementById("BusArrival_Info").innerHTML = "<table style='width:100%' class='table table-striped table-dark table-bordered table-sm'>"+text+"</table>";
+                            
+                            // Plotly z list -  based on BSCODE selected
+                            var z_list = [];
+                            for (i = 23; i >=0; i--){
+                                var z_TempList = [];
+                                if (typeof data["zList_raw"]["tapInWEEKDAY_"+i] !== 'undefined'){
+                                    z_TempList.push(data["zList_raw"]["tapInWEEKDAY_"+i]);
+                                } else {
+                                    z_TempList.push(null);
+                                }
+                                if (typeof data["zList_raw"]["tapInWEEKENDS/HOLIDAY_"+i] !== 'undefined'){
+                                    z_TempList.push(data["zList_raw"]["tapInWEEKENDS/HOLIDAY_"+i]);
+                                } else {
+                                    z_TempList.push(null);
+                                }
+                                z_list.push(z_TempList)
+                            }
+                            var plot_data = [
+                                {
+                                    z: z_list,
+                                    x: ['WkDay','WkEnds/PH'],
+                                    y: [
+                                                '11PM',
+                                                '10PM',
+                                                '9PM',
+                                                '8PM',
+                                                '7PM',
+                                                '6PM',
+                                                '5PM',
+                                                '4PM',
+                                                '3PM',
+                                                '2PM',
+                                                '1PM',
+                                                '12PM',
+                                                '11AM',
+                                                '10AM',
+                                                '9AM',
+                                                '8AM',
+                                                '7AM', 
+                                                '6AM',
+                                                '5AM',
+                                                '4AM',
+                                                '3AM',
+                                                '2AM',
+                                                '1AM',
+                                                '12AM'
+                                    ],
+                                    type: 'heatmap',
+                                    colorscale: 'YlOrRd_r',
+                                    hoverongaps: false,
+                                    showscale: false,
+                                }
+                            ];
+                            var layout = {
+                                //plot_bgcolor:"black",
+                                paper_bgcolor:"#FFF3",
+                                title: {
+                                    text:'Hourly Tap-In',
+                                    font: {
+                                    family: 'Calibri',
+                                    size: 24
+                                    },
+                                    xref: 'paper',
+                                    x: 0.5,
+                                }
+                            };
+                            var config = {responsive: true,displayModeBar: false}
+                            Plotly.newPlot('heatMapLoading', plot_data,layout,config);
+
                         })
                     })
 
