@@ -191,7 +191,7 @@
 
         <script>
             // Leaflet Core
-            var mymap, mrkCurrentLocation, popZocalo, ctlZoom,ctlAttribute, ctlScale;
+            var mymap, mrkCurrentLocation, circleCurrentLocation, ctlZoom,ctlAttribute, ctlScale;
             // Map Layers
             var lyrOSM, lyrOneMapDefault, lyrTopo,lyrImagery,lyrTransport;
             var ctlLayers; // layer Control
@@ -215,6 +215,7 @@
             // Sprite Icon
             var iconRedSprite;
             var iconVioletSprite;
+            var currentLocationIcon;
             // Marker Cluster - Ridership
             var lyrMarkerCluster
             // Polygon layer - District
@@ -275,8 +276,9 @@
                 //----------------------------------------------------
                 // Icons
                 //----------------------------------------------------
-                iconRedSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'red',prefix:'fa',iconColor:"FF0000"})
-                iconVioletSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'blue',prefix:'fa',iconColor:"FF0000",spin:false})
+                iconRedSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'red',prefix:'fa',iconColor:'black'})
+                iconVioletSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'blue',prefix:'fa',iconColor:'white',spin:false})
+                currentLocationIcon = L.AwesomeMarkers.icon({icon:'street-view',markerColor:'orange',prefix:'fa',iconColor:'black',spin:false})
                 //----------------------------------------------------
                 
                 //----------------------------------------------------
@@ -428,12 +430,14 @@
                 // ***** LOCATION CONTROL *****
                 // When location is found.
                 mymap.on('locationfound', function(e){
-                    if (mrkCurrentLocation) { // Remove only if mrkCurrentLocation is set.
+                    if (circleCurrentLocation) { // Remove only if circleCurrentLocation is set.
+                        circleCurrentLocation.remove();
                         mrkCurrentLocation.remove();
                     }
                     
-                    mrkCurrentLocation = L.circleMarker(e.latlng,{radius:e.accuracy/2}).addTo(mymap); //accuracy is reported in meter
-                    mymap.setView(e.latlng,14);
+                    circleCurrentLocation = L.circleMarker(e.latlng,{radius:e.accuracy/2}).addTo(mymap); //accuracy is reported in meter
+                    mrkCurrentLocation = L.marker(e.latlng, {icon: currentLocationIcon}).addTo(mymap);
+                    mymap.setView(e.latlng,18);
                 });
 
                 // In the event of unable to find location.
