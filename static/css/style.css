@@ -21,13 +21,13 @@ html {
     z-index: 5000;
     top:0;
     left:0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    background:black url('/static/img/Loading-gif2.gif'); 
-    display:flex;
+    background: #222222 url('/static/img/Loading-gif2.gif'); 
+    display:block;
     justify-content: center;
     align-items:center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
