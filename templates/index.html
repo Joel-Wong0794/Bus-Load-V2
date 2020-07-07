@@ -83,7 +83,9 @@
     </head>
     <body>
         <div id="loader"></div>
-
+        <!-- <div id="loader">
+            <img src="{{ url_for('static', filename='img/loading-gif2.gif')}}" alt="loading...">
+        </div> -->
         <nav id="navbar" class="navbar navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Bus Ridership</a>
             <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Menu</button>
@@ -201,11 +203,9 @@
             // Feature Group
                 var featureDrawnItems;
             // Leaflet Plugins
-            var ctlPan; // Pan Control: http://kartena.github.io/Leaflet.Pancontrol/
             var ctlZoomslider; // Zoom Slider: http://kartena.github.io/Leaflet.zoomslider/
             var ctlMousePosition; // Mouse Position: https://github.com/ardhi/Leaflet.MousePosition
             var ctlMeasure; // PolylineMeasure: https://github.com/ppete2/Leaflet.PolylineMeasure
-            var ctlEasyButton; // EasyButton: https://github.com/CliffCloud/Leaflet.EasyButton
             var ctlSidebar; // SideBar v1: https://github.com/turbo87/leaflet-sidebar/
             var ctlSearch; // OpenCageSearch: https://github.com/OpenCageData/leaflet-opencage-search
             // Leaflet Draw Plug-in
