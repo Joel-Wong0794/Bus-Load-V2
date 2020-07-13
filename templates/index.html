@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
         <title>Bus Ridership (May 2020)</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='src/leaflet.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/css/bootstrap.css') }}">
@@ -80,6 +83,14 @@
     </head>
     <body>
         <div id="loader"></div>
+        <!-- <div id="loader">
+            <img src="{{ url_for('static', filename='img/loading-gif2.gif')}}" alt="loading...">
+        </div> -->
+        <nav id="navbar" class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Bus Ridership</a>
+            <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Open Menu</button>
+        </nav>
+
         <div class="row" id = "overallRow">
             <div id= "side-bar" class = "col-md-12">
                 <button id = "btnLocate" class = 'btn btn-primary btn-block'>My Location</button><br>
@@ -172,6 +183,7 @@
             </div> 
             
             <div id = "mapdiv" class = "col-md-12">
+                
             </div> 
 
         </div>
@@ -179,7 +191,7 @@
 
         <script>
             // Leaflet Core
-            var mymap, mrkCurrentLocation, popZocalo, ctlZoom,ctlAttribute, ctlScale;
+            var mymap, mrkCurrentLocation, circleCurrentLocation, ctlZoom,ctlAttribute, ctlScale;
             // Map Layers
             var lyrOSM, lyrOneMapDefault, lyrTopo,lyrImagery,lyrTransport;
             var ctlLayers; // layer Control
@@ -191,11 +203,9 @@
             // Feature Group
                 var featureDrawnItems;
             // Leaflet Plugins
-            var ctlPan; // Pan Control: http://kartena.github.io/Leaflet.Pancontrol/
             var ctlZoomslider; // Zoom Slider: http://kartena.github.io/Leaflet.zoomslider/
             var ctlMousePosition; // Mouse Position: https://github.com/ardhi/Leaflet.MousePosition
             var ctlMeasure; // PolylineMeasure: https://github.com/ppete2/Leaflet.PolylineMeasure
-            var ctlEasyButton; // EasyButton: https://github.com/CliffCloud/Leaflet.EasyButton
             var ctlSidebar; // SideBar v1: https://github.com/turbo87/leaflet-sidebar/
             var ctlSearch; // OpenCageSearch: https://github.com/OpenCageData/leaflet-opencage-search
             // Leaflet Draw Plug-in
@@ -205,6 +215,7 @@
             // Sprite Icon
             var iconRedSprite;
             var iconVioletSprite;
+            var currentLocationIcon;
             // Marker Cluster - Ridership
             var lyrMarkerCluster
             // Polygon layer - District
@@ -265,8 +276,9 @@
                 //----------------------------------------------------
                 // Icons
                 //----------------------------------------------------
-                iconRedSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'red',prefix:'fa',iconColor:"FF0000"})
-                iconVioletSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'blue',prefix:'fa',iconColor:"FF0000",spin:false})
+                iconRedSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'red',prefix:'fa',iconColor:'black'})
+                iconVioletSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'blue',prefix:'fa',iconColor:'white',spin:false})
+                currentLocationIcon = L.AwesomeMarkers.icon({icon:'street-view',markerColor:'orange',prefix:'fa',iconColor:'black',spin:false})
                 //----------------------------------------------------
                 
                 //----------------------------------------------------
@@ -340,11 +352,19 @@
                 // ***** Custom Zoom Slider *****
                 ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
                 ctlMousePosition = L.control.mousePosition().addTo(mymap);
-                ctlEasyButton = L.easyButton("<div style ='padding-top:10px'><img src='{{url_for('static',filename='src/icons/open-menu.png')}}' width = '30px'></div>", function(){
+
+                // Menu Toggle to activate sidebar
+                $("#ActivateMenu").click(function(){
                     ctlSidebar.toggle();
-                }).addTo(mymap);
+                    ctlSidebar.on('shown', function () {
+                        $('#ActivateMenu').html("Close Menu")
+                    });
+                    ctlSidebar.on('hidden', function () {
+                        $('#ActivateMenu').html("Open Menu")
+                    });
+                });
                 // ***** Sidebar V1 *****
-                ctlSidebar = L.control.sidebar('side-bar').addTo(mymap);
+                ctlSidebar = L.control.sidebar('side-bar',{closeButton:false,autoPan:false}).addTo(mymap);
                 ctlMeasure = L.control.polylineMeasure().addTo(mymap);
 
                 // ***** OpenCage Search Location *****
@@ -416,12 +436,14 @@
                 // ***** LOCATION CONTROL *****
                 // When location is found.
                 mymap.on('locationfound', function(e){
-                    if (mrkCurrentLocation) { // Remove only if mrkCurrentLocation is set.
+                    if (circleCurrentLocation) { // Remove only if circleCurrentLocation is set.
+                        circleCurrentLocation.remove();
                         mrkCurrentLocation.remove();
                     }
                     
-                    mrkCurrentLocation = L.circleMarker(e.latlng,{radius:e.accuracy/2}).addTo(mymap); //accuracy is reported in meter
-                    mymap.setView(e.latlng,14);
+                    circleCurrentLocation = L.circleMarker(e.latlng,{radius:e.accuracy/2}).addTo(mymap); //accuracy is reported in meter
+                    mrkCurrentLocation = L.marker(e.latlng, {icon: currentLocationIcon}).addTo(mymap);
+                    mymap.setView(e.latlng,18);
                 });
 
                 // In the event of unable to find location.
@@ -453,7 +475,8 @@
                                 flyTo:true,
                                 initialZoomLevel: 18,
                                 enableHighAccuracy: true,
-                                showCompass: true
+                                showCompass: true,
+                                drawMarker:true
                         }
                     });
                 });
@@ -516,10 +539,18 @@
                     var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
                     $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
                     $('#btnFindBS').click();
+                    ctlSidebar.on('shown', function () {
+                        $('#ActivateMenu').html("Close Menu")
+                    });
+                    ctlSidebar.show();
                 }else{
                     var cleaned_clicked_BSCode = clicked_BSCode.toString()
                     $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
                     $('#btnFindBS').click();
+                    ctlSidebar.on('shown', function () {
+                        $('#ActivateMenu').html("Close Menu")
+                    });
+                    ctlSidebar.show();
                 }
             }
 

@@ -5,7 +5,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 import pandas as pd
 
 # NEW MODULES
-import geojson
+import json
 # ------------------------
 
 
@@ -21,7 +21,8 @@ df_BusStop = BusStopList_df()
 
 # Pre-load Ridership Data
 with open(dir_path+"/static/data/LTAMall_Ridership_Data.geojson") as f:
-    ridership_data = geojson.load(f)
+    #ridership_data = geojson.load(f)
+    ridership_data = json.load(f)
 
 app = Flask(__name__)
 
@@ -100,12 +101,12 @@ def BusArrival_Function():
     for i in range(len(ridership_data["features"])):
         # WEEKDAY
         if ((ridership_data['features'][i]['properties']['PT_CODE']==req["BSCODE"]) and (ridership_data['features'][i]['properties']['DAY_TYPE']=="WEEKDAY")):
-            tapIn_Identifier = "tapIn"+"WEEKDAY" + "_"+str(ridership_data.features[i]['properties']["TIME_PER_HOUR"])
-            zList_raw[tapIn_Identifier] = ridership_data.features[i]['properties']["TOTAL_TAP_IN_VOLUME"]
+            tapIn_Identifier = "tapIn"+"WEEKDAY" + "_"+str(ridership_data['features'][i]['properties']["TIME_PER_HOUR"])
+            zList_raw[tapIn_Identifier] = ridership_data['features'][i]['properties']["TOTAL_TAP_IN_VOLUME"]
         # WEEKENDS/PH
         elif ((ridership_data['features'][i]['properties']['PT_CODE']==req["BSCODE"]) and (ridership_data['features'][i]['properties']['DAY_TYPE']=="WEEKENDS/HOLIDAY")):
-            tapIn_Identifier = "tapIn"+"WEEKENDS/HOLIDAY" + "_"+str(ridership_data.features[i]['properties']["TIME_PER_HOUR"])
-            zList_raw[tapIn_Identifier] = ridership_data.features[i]['properties']["TOTAL_TAP_IN_VOLUME"]
+            tapIn_Identifier = "tapIn"+"WEEKENDS/HOLIDAY" + "_"+str(ridership_data['features'][i]['properties']["TIME_PER_HOUR"])
+            zList_raw[tapIn_Identifier] = ridership_data['features'][i]['properties']["TOTAL_TAP_IN_VOLUME"]
     #-------------------------------------------
 
     #-------------------------------------------

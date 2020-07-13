@@ -1,42 +1,66 @@
-#loader{
-  position: fixed;
-  left:0;
-  top:0;
-	width: 100%;
-	height: 100vh;
-  background:black url('https://icon-library.net/images/loading-gif-icon/loading-gif-icon-28.jpg'); 
-  background-size: contain;
-  background-repeat: no-repeat;
-  z-index: 5000;
-  display: block;
-  margin: 0 auto;
+/* #loader{
+    position: fixed;
+    left:0;
+    top:0;
+      width: 100%;
+      height: 100vh;
+    background:black url('https://icon-library.net/images/loading-gif-icon/loading-gif-icon-28.jpg'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 5000;
+    display: block;
+    margin: 0 auto;
+  } */
+
+html {
+      background-color: #343a40
 }
 
-.leaflet-bar button, .leaflet-bar button:hover {
-    background-color: powderblue;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    width: 8vw;
-    height: 8vh;
-    line-height: 26px;
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    color: black;
-} 
+#loader {
+    position: fixed;
+    z-index: 5000;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    background: #222222 url('/static/img/Loading-gif2.gif'); 
+    display:block;
+    justify-content: center;
+    align-items:center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#loader > img{
+    width:100px;
+}
+
+.close{
+    position: inherit;
+    z-index: 4000;
+    right: 20vw;
+    outline: none;
+}
+
 #side-bar {
     opacity: 0.8;
-    width:70vw;
+    width:100%;
 }
 #mapdiv {
-    height: 100vh;
-    width:100vw;
+    height: 85vh;
+    width:100%;
     left: 15px;
     bottom: 0px;
 }
+
+#navbar{
+    height: 7vh;
+    width:100%;
+}
+
 #overallRow {
-    height: 100vh;
-    width:100vw;
+    height: 85vh;
+    width:100%;
 }
 .col-xs-12,.col-xs-6,.col-xs-4{
     padding:3px
@@ -98,4 +122,11 @@
 #heatMapLoading {
     position: relative;
     top: 2em;
+}
+
+#ActivateMenu{
+    z-index: 3000;
+    position: absolute;
+    right: 5vw;
+    width: 30vw;
 }
