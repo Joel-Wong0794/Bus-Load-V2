@@ -88,7 +88,7 @@
         </div> -->
         <nav id="navbar" class="navbar navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Bus Ridership</a>
-            <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Menu</button>
+            <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Open Menu</button>
         </nav>
 
         <div class="row" id = "overallRow">
@@ -356,6 +356,12 @@
                 // Menu Toggle to activate sidebar
                 $("#ActivateMenu").click(function(){
                     ctlSidebar.toggle();
+                    ctlSidebar.on('shown', function () {
+                        $('#ActivateMenu').html("Close Menu")
+                    });
+                    ctlSidebar.on('hidden', function () {
+                        $('#ActivateMenu').html("Open Menu")
+                    });
                 });
                 // ***** Sidebar V1 *****
                 ctlSidebar = L.control.sidebar('side-bar',{closeButton:false,autoPan:false}).addTo(mymap);
@@ -533,11 +539,17 @@
                     var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
                     $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
                     $('#btnFindBS').click();
+                    ctlSidebar.on('shown', function () {
+                        $('#ActivateMenu').html("Close Menu")
+                    });
                     ctlSidebar.show();
                 }else{
                     var cleaned_clicked_BSCode = clicked_BSCode.toString()
                     $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
                     $('#btnFindBS').click();
+                    ctlSidebar.on('shown', function () {
+                        $('#ActivateMenu').html("Close Menu")
+                    });
                     ctlSidebar.show();
                 }
             }
