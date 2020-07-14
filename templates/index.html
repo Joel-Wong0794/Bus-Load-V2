@@ -990,7 +990,7 @@
                     spaces = spaces + " ";
                 }
                 layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
-                {repeat: false, center: true,offset:-5, attributes: {fill: '#990000','font-weight': 'bold','font-size': '18'}})
+                {repeat: false, center: true,offset:((-1)*(Math.floor(Math.random() * (70 - 4)) + 4)), attributes: {fill: '#990000','font-weight': 'bold','font-size': '18'}})
             }
 
             // filter
