@@ -125,3 +125,7 @@ html {
     right: 5vw;
     width: 30vw;
 }
+
+#busStopData_Loading{
+    text-align: center
+}
