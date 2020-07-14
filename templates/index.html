@@ -108,7 +108,7 @@
 
                 <div id="divSelectPackage" class="col-xs-12">
                     <div id="divSelectPackage_Label" class="text-center col-xs-12">
-                        <h4>Filter: Bus Routes by Packagep</h4>
+                        <h4>Filter: Bus Routes by Package</h4>
                     </div>
                     <!-- RADIO BUTTONS -->
                     <div id="divSelectPackage_Radio" class="col-xs-12">
@@ -954,8 +954,12 @@
 
             // style: To create randomised route colors.
             function styleBusSvcs(json){
-                return {color:'#'+Math.random().toString(16).substr(2,6),
-                weight: 5
+                var max = 8;
+                var min = 5;
+                return {
+                    color:'#'+Math.random().toString(16).substr(2,6),
+                    weight: Math.floor(Math.random() * (max - min)) + min,
+                    opacity: 0.3
                 };
             }
 
@@ -976,7 +980,7 @@
                     spaces = spaces + " ";
                 }
                 layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
-                {repeat: false, center: true,offset:-5, attributes: {fill: '#007DEF','font-weight': 'bold','font-size': '18'}})
+                {repeat: false, center: true,offset:-5, attributes: {fill: '#990000','font-weight': 'bold','font-size': '18'}})
             }
 
             // filter
