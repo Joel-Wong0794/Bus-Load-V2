@@ -10,11 +10,9 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='src/css/bootstrap.css') }}">
 
         <!-- Plug-ins -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.Pan.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.Zoomslider.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.MousePosition.css') }}">
         <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/easy-button.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.Sidebar.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/leaflet-opencage/src/css/L.Control.OpenCageSearch.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/MarkerCluster/MarkerCluster.css') }}">
@@ -23,11 +21,9 @@
         <script src = "{{ url_for('static', filename='src/leaflet-src.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/jquery-3.5.1.min.js')}}"></script>
         <!-- General Plug-ins -->
-        <script src = "{{ url_for('static', filename='src/plugins/L.Control.Pan.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/L.Control.Zoomslider.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/L.Control.MousePosition.js')}}"></script>
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
-        <script src="{{ url_for('static', filename='src/plugins/easy-button.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/L.Control.Sidebar.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/leaflet-opencage/src/js/L.Control.OpenCageSearch.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/leaflet-providers.js')}}"></script>
@@ -35,6 +31,7 @@
         <script src = "{{ url_for('static', filename='src/plugins/leaflet.sprite.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/MarkerCluster/leaflet.markercluster.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/leaflet.geometryutil.js')}}"></script>
+        <script src = "{{ url_for('static', filename='src/plugins/leaflet.textpath.js')}}"></script>
         <!-- ---------------------------------------------------- -->
         <!-- FontAwesome Icons -->
         <!-- <link href="{{ url_for('static', filename='https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')}}" rel="stylesheet"> -->
@@ -61,10 +58,6 @@
         <!-- Start: jQuery - AutoComplete -->
         <link rel="stylesheet" href="{{ url_for('static', filename='src/jQuery/jquery-ui.min.css')}}">
         <script src = "{{ url_for('static', filename='src/jQuery/jquery-ui.min.js')}}"></script>
-        <!-- ---------------------------------------------------- -->
-        
-        <!-- Turf.js -->
-        <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
         <!-- ---------------------------------------------------- -->
 
         <!-- HTML's Style Sheet -->
@@ -111,6 +104,60 @@
                         <div id="heatMapLoading"></div>
                         <div id = "BusArrival_Info"></div>
                     </div> 
+                </div>
+
+                <div id="divSelectPackage" class="col-xs-12">
+                    <div id="divSelectPackage_Label" class="text-center col-xs-12">
+                        <h4>Filter: Bus Routes by Packagep</h4>
+                    </div>
+                    <!-- RADIO BUTTONS -->
+                    <div id="divSelectPackage_Radio" class="col-xs-12">
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="NONE" checked> <strong>No Route Shown</strong>
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT200 - Bulim"> PT200 - Bulim
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT201 - Loyang"> PT201 - Loyang
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT202 - Seletar"> PT202 - Seletar
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT203 - Bukit Merah"> PT203 - Bukit Merah
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT206 - Sengkang – Hougang"> PT206 - Sengkang – Hougang
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT207 - Tampines"> PT207 - Tampines
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT208 - Bishan – Toa Payoh"> PT208 - Bishan – Toa Payoh
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT209 - Serangoon - Eunos"> PT209 - Serangoon - Eunos
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT210 - Clementi"> PT210 - Clementi
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT211 - Bedok"> PT211 - Bedok
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT212 - Jurong West"> PT212 - Jurong West
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT213 - Sembawang-Yishun"> PT213 - Sembawang-Yishun
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT215 - Choa Chu Kang-Bukit Panjang"> PT215 - Choa Chu Kang-Bukit Panjang
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT216 - Woodlands"> PT216 - Woodlands
+                        </div>
+                    </div>               
                 </div>
 
                 <div id="divProject2" class="col-xs-12">
@@ -227,6 +274,9 @@
             var today = new Date();
             var TIME_PER_HOUR = today.getHours() // Initialise as current hour
             selectElement('Time_FilterBS',today.getHours()) // Update the Drop-down Menu as Current Hour
+            // Routes Layer
+            var geojson_Routes
+            var layer_Routes
 
             var preloader = document.getElementById('loader');
 
@@ -318,6 +368,9 @@
 
                 // Layer 3: District (2019)
                 lyrDistrict = L.geoJson.ajax("{{url_for('static', filename='/data/PlanningBoundary_2019.geojson')}}",{style:styleRegions,onEachFeature:processRegions, filter:filterDistricts}).addTo(mymap)
+
+                // Layer 4: Routes by Packages
+                layer_Routes = L.geoJson.ajax("{{url_for('static', filename='/data/routes_v2.geojson')}}",{style: styleBusSvcs,onEachFeature:processDirections,filter:filterBusSvcs}).bindPopup(returnBusSvcs).addTo(mymap)
                 // ----------------------------------------------------------------------------------
 
                 //----------------------------------------------------
@@ -402,7 +455,7 @@
                 ctlDraw = new L.Control.Draw({
                     draw:{
                         polyline: false,
-                        circle:true,
+                        circle:false,
                         polygon:false,
                         rectangle:false,
                         marker:true
@@ -770,8 +823,7 @@
                     }
                     lyrSearch = L.geoJSON(lyr.toGeoJSON(),{style:{color:'red',weight:10,opacity:0.5}}).addTo(mymap);
                     mymap.setView(lyr._latlng, 17); // Zoom to marker
-                    var att = lyr.feature
-                    .properties;
+                    var att = lyr.feature.properties;
                     if(att.PT_CODE.toString().length === 4){
                         var BSCode_Raw = "0"+att.PT_CODE.toString() // Solves the problem of GeoJson in wrong BSCode Format.
                     }else{
@@ -890,6 +942,56 @@
             });
             // ---------------------------------------------------------------------------
 
+            // ---------------------------------------------------------------------------
+            // Function 3: Bus Routes by BCM Packages
+            // Selected based on BCM package radio buttons.
+            // ---------------------------------------------------------------------------
+
+            $("input[name=flt_Package]").click(function(){
+                layer_Routes.refresh(); // Dyanmically replot the route polylines.
+            });
+
+
+            // style: To create randomised route colors.
+            function styleBusSvcs(json){
+                return {color:'#'+Math.random().toString(16).substr(2,6),
+                weight: 5
+                };
+            }
+
+            // Bind Pop-up: For Pop-up Description on each bus service polyline
+            function returnBusSvcs(layer){
+                var att = layer.feature.properties;
+                
+                return "<h4><strong>" + att.number + "</strong></h4>"
+            }
+    
+            // onEachFeature: Uses Textpath plug-in to generation route direction.
+            // https://github.com/makinacorpus/Leaflet.TextPath
+            function processDirections(json,layer){
+                var i;
+                var spaces = " "
+                var randomChar = Math.floor(Math.random() * 50);
+                for (i = 0; i<=randomChar;i++){
+                    spaces = spaces + " ";
+                }
+                layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
+                {repeat: false, center: true,offset:-5, attributes: {fill: '#007DEF','font-weight': 'bold','font-size': '18'}})
+            }
+
+            // filter
+            // Radio Buttons: Select BCM Package
+            function filterBusSvcs(layer){          
+                var att = layer.properties;
+                var Selected_Package = $("input[name=flt_Package]:checked").val();
+                if (att.package == Selected_Package) {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }
+            // ---------------------------------------------------------------------------
         </script>
         
 
