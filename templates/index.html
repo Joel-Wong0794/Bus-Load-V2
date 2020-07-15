@@ -364,7 +364,6 @@
 
                 // Checks final zoom level everytime there is a change in zoom
                 mymap.on('zoomend',function(){
-                    console.log(mymap.getZoom())
                     layer_Routes.refresh()
                 })
                 // ----------------------------------------------------------------------------------
@@ -944,7 +943,6 @@
                     if (offsetMultiply === 8){
                         offsetMultiply = 1;
                     }
-                    console.log(spaces + '--►- ' + json.properties.number + ' -►')
                     layer.setText(spaces + '--►- ' + json.properties.number + ' -►', 
                     {repeat: false, center: true,offset: (-8)*offsetMultiply, attributes: {fill: '#990000','font-weight': 'bold','font-size': '14'}})   
                     previousSvc = json.properties.number                        
