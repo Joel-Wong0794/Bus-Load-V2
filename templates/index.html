@@ -298,7 +298,8 @@
                 {
                     center: [1.3649222, 103.8125610],
                     zoom:12,
-                    zoomControl:false
+                    zoomControl:false,
+                    zoomSnap:0
                 });
                 // ***** Attribution *****
                 ctlAttribute = L.control.attribution({position:"bottomleft"});
@@ -360,6 +361,12 @@
 
                 // Layer 4: Routes by Packages
                 layer_Routes = L.geoJson.ajax("{{url_for('static', filename='/data/routes_v2.geojson')}}",{style: styleBusSvcs,onEachFeature:processDirections,filter:filterBusSvcs}).bindPopup(returnBusSvcs).addTo(mymap)
+
+                // Checks final zoom level everytime there is a change in zoom
+                mymap.on('zoomend',function(){
+                    console.log(mymap.getZoom())
+                    layer_Routes.refresh()
+                })
                 // ----------------------------------------------------------------------------------
 
 
@@ -900,7 +907,7 @@
                 return {
                     color:'#'+Math.random().toString(16).substr(2,6),
                     weight: Math.floor(Math.random() * (max - min)) + min,
-                    opacity: 0.3
+                    opacity: 0.4
                 };
             }
 
@@ -910,18 +917,27 @@
                 
                 return "<h4><strong>" + att.number + "</strong></h4>"
             }
-    
+            
+            var offsetMultiply = 0;
             // onEachFeature: Uses Textpath plug-in to generation route direction.
             // https://github.com/makinacorpus/Leaflet.TextPath
             function processDirections(json,layer){
-                var i;
-                var spaces = " "
-                var randomChar = Math.floor(Math.random() * 50);
-                for (i = 0; i<=randomChar;i++){
-                    spaces = spaces + " ";
+                // Only renders the route directions if the zoom level is above 14.
+                if (mymap.getZoom()>=16){
+                    var i;
+                    var spaces = " "
+                    var randomChar = Math.floor(Math.random() * 50);
+                    for (i = 0; i<=randomChar;i++){
+                        spaces = spaces + " ";
+                    }
+                    // ((-5)*(Math.floor(Math.random() * (10 - 1)) + 1))
+                    offsetMultiply +=1;
+                    if (offsetMultiply === 10){
+                        offsetMultiply = 1;
+                    }
+                    layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
+                    {repeat: false, center: true,offset: (-5)*offsetMultiply, attributes: {fill: '#990000','font-weight': 'bold','font-size': '14'}})                           
                 }
-                layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
-                {repeat: false, center: true,offset:((-2)*(Math.floor(Math.random() * (35 - 1)) + 1)), attributes: {fill: '#990000','font-weight': 'bold','font-size': '18'}})
             }
 
             // filter
