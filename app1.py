@@ -62,7 +62,7 @@ def BusArrival_Function():
         ArrivalTime = int(round(ArriveLah_Raw_BusArrival["services"][i]["next"]["duration_ms"]/(60*1000),0))
         BusType = ArriveLah_Raw_BusArrival["services"][i]["next"]["type"]
         if ArrivalTime <= 1:
-            ArrivalTime = "<strong> -- Arr -- </strong>"
+            ArrivalTime = "ARR" + " ("+ BusType +")"
         else:
             ArrivalTime = str(ArrivalTime) + " min" + " ("+ BusType +")"
         ArrivalTime_List.append(ArrivalTime)

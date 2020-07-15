@@ -41,20 +41,6 @@
         <script src = "{{ url_for('static', filename='src/plugins/leaflet.awesome-markers.min.js')}}"></script>
         <!-- ---------------------------------------------------- -->
 
-        <!-- Start: Leaflet Style Editor -->
-        <script src="https://cdn.jsdelivr.net/npm/leaflet-styleeditor@latest/dist/javascript/Leaflet.StyleEditor.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-styleeditor@latest/dist/css/Leaflet.StyleEditor.min.css" />
-        <!-- ---------------------------------------------------- -->
-
-        <!-- Start: Leaflet draw Plugin -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-        <!-- ---------------------------------------------------- -->
-
-        <!-- Start: leaflet-omnivore -->
-        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
-        <!-- ---------------------------------------------------- -->
-
         <!-- Start: jQuery - AutoComplete -->
         <link rel="stylesheet" href="{{ url_for('static', filename='src/jQuery/jquery-ui.min.css')}}">
         <script src = "{{ url_for('static', filename='src/jQuery/jquery-ui.min.js')}}"></script>
@@ -65,13 +51,7 @@
 
         <!-- Plot.js -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        
-        <!-- geoSearch https://github.com/smeijer/leaflet-geosearch -->
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css"
-        />
-        <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+
 
     </head>
     <body>
@@ -251,7 +231,7 @@
             // Ridership Layer
             var ridership_geoJson;
             // Feature Group
-                var featureDrawnItems;
+            var featureDrawnItems;
             // Leaflet Plugins
             var ctlZoomslider; // Zoom Slider: http://kartena.github.io/Leaflet.zoomslider/
             var ctlMousePosition; // Mouse Position: https://github.com/ardhi/Leaflet.MousePosition
@@ -266,6 +246,8 @@
             var iconRedSprite;
             var iconVioletSprite;
             var currentLocationIcon;
+            var clickedBS;
+            var clickedBS_marker;
             // Marker Cluster - Ridership
             var lyrMarkerCluster
             // Polygon layer - District
@@ -331,6 +313,7 @@
                 iconRedSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'red',prefix:'fa',iconColor:'black'})
                 iconVioletSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'blue',prefix:'fa',iconColor:'white',spin:false})
                 currentLocationIcon = L.AwesomeMarkers.icon({icon:'street-view',markerColor:'orange',prefix:'fa',iconColor:'black',spin:false})
+                clickedBS = L.AwesomeMarkers.icon({icon:'star',markerColor:'purple',prefix:'fa',iconColor:'black',spin:true})
                 //----------------------------------------------------
                 
                 //----------------------------------------------------
@@ -362,11 +345,15 @@
                     lyrMarkerCluster.addTo(mymap);
                     mymap.fitbounds(ridership_geoJson.getBounds());
                 });
-                
-
+                // Event handler: When user clicks on a bus stop marker.
+                ridership_geoJson.on('click',function(e){
+                    busStopClick(e);
+                });
+                /*
                 // Layer 2: Drawing Features
                 featureDrawnItems = new L.featureGroup();
                 featureDrawnItems.addTo(mymap);
+                */
 
                 // Layer 3: District (2019)
                 lyrDistrict = L.geoJson.ajax("{{url_for('static', filename='/data/PlanningBoundary_2019.geojson')}}",{style:styleRegions,onEachFeature:processRegions, filter:filterDistricts}).addTo(mymap)
@@ -375,26 +362,6 @@
                 layer_Routes = L.geoJson.ajax("{{url_for('static', filename='/data/routes_v2.geojson')}}",{style: styleBusSvcs,onEachFeature:processDirections,filter:filterBusSvcs}).bindPopup(returnBusSvcs).addTo(mymap)
                 // ----------------------------------------------------------------------------------
 
-                //----------------------------------------------------
-                // SETUP: LAYER CONTROL
-                //----------------------------------------------------
-                // BaseMaps
-                objBasemaps = {
-                    "Open Street Maps" : lyrOSM,
-                    "Topo Map": lyrTopo,
-                    "One Map Default": lyrOneMapDefault,
-                    "Imagery": lyrImagery,
-                    "Transport":lyrTransport
-                };
-                // Overlays
-                objOverlays = {
-                    "Drawn Items":featureDrawnItems,
-                    'Planning Boundary (2019)':lyrDistrict,
-                    "Bus Stops":lyrMarkerCluster
-                };
-                
-                // ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
-                //----------------------------------------------------
 
                 // ----------------------------------------------------------------------
                 // PLUG-INS
@@ -411,9 +378,11 @@
                 // Menu Toggle to activate sidebar
                 $("#ActivateMenu").click(function(){
                     ctlSidebar.toggle();
+                    // If Menu is already shown, make the button show text: "Close Menu"
                     ctlSidebar.on('shown', function () {
                         $('#ActivateMenu').html("Close Menu")
                     });
+                    // If Menu is NOT already shown, make the button show text: "Open Menu"
                     ctlSidebar.on('hidden', function () {
                         $('#ActivateMenu').html("Open Menu")
                     });
@@ -424,69 +393,6 @@
 
                 // ***** OpenCage Search Location *****
                 ctlSearch = L.Control.openCageSearch({key:'17d0c3cd10484522b857c1814cd9df16',limit:10}).addTo(mymap); // Key is from OpenCage account: NightFury555 GitHub Account.
-                
-
-                /*
-                // ***** GeoSearch *****
-                const search = new GeoSearch.GeoSearchControl({
-                    provider: new GeoSearch.OpenStreetMapProvider(),
-                    style: 'bar',
-                    showMarker: true, // optional: true|false  - default true
-                    showPopup: false, // optional: true|false  - default false
-                    marker: {
-                      // optional: L.Marker    - default L.Icon.Default
-                      icon: new L.Marker,
-                      draggable: false,
-                    },
-                    popupFormat: ({ query, result }) => result.label, // optional: function    - default returns result label
-                    maxMarkers: 1, // optional: number      - default 1
-                    retainZoomLevel: false, // optional: true|false  - default false
-                    animateZoom: true, // optional: true|false  - default true
-                    autoClose: false, // optional: true|false  - default false
-                    searchLabel: 'Enter address...', // optional: string      - default 'Enter address'
-                    keepResult: false, // optional: true|false  - default false
-                  });
-                  mymap.addControl(search);
-
-                  mymap.on('geosearch/showlocation', function(result) {
-                    console.log(result);
-                   });
-                */
-
-                // ***** Leaflet Draw Plug-in *****
-                ctlDraw = new L.Control.Draw({
-                    draw:{
-                        polyline: false,
-                        circle:false,
-                        polygon:false,
-                        rectangle:false,
-                        marker:true
-                    },
-                    edit:{
-                        featureGroup:featureDrawnItems,
-                        remove:true // Delete button
-                    }
-                });
-                mymap.addControl(ctlDraw);
-
-                mymap.on('draw:created',function(e){ // shapes drawn will be added to 'featureGroup1'
-                    var llRef = e.layer.getLatLng();
-                    var strTable = "<H6>Nearest Bus Stop: </H6><table class = 'table table-dark'>";
-                    strTable +="<tr><th>BS Code</th><th>Description</th><th>Distance</th><th>Direction</th></tr>";
-                    var nearestBS = returnClosestlayer(ridership_geoJson,llRef);
-                    strTable +="<tr><td>"+nearestBS.att.PT_CODE+"</td><td>"+nearestBS.att.Description+"</td><td>"+nearestBS.distance.toFixed(0)+"m</td><td>"+nearestBS.bearing.toFixed(0)+"°</td></tr>";
-                    strTable +="</table>";
-                    featureDrawnItems.addLayer(e.layer.bindPopup(strTable,{maxWidth:400}));
-
-                })
-
-                // ***** Style Editor *****
-                mymap.addControl(L.control.styleEditor())
-                // ----------------------------------------------------------------------
-
-                // ----------------------------------------------------------------------
-                // jQuery EVENT Handlers: HTML Methods to Create Controls / On mouse and Keyboard Interactions
-                // ----------------------------------------------------------------------
                 
                 // ***** LOCATION CONTROL *****
                 // When location is found.
@@ -537,7 +443,7 @@
                 });
 
 
-                // ---------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------
                     
             });
             // ***** END OF MAP COMPONENTS *****         
@@ -586,35 +492,13 @@
             // 1) RIDERSHIP Functions
             // Filtering Properties of RIDERSHIP geoJson points.
             // The input variables come from the Functions available for GeoJson! See Leaflet Docs!!
-            // ---------------------------------------------------------------------------
-            function busStopClick(e){
-                var clicked_BSCode = e.target['feature']['properties']['PT_CODE']
-                var clicked_Description = e.target['feature']['properties']['Description']
-                if(clicked_BSCode.toString().length === 4){
-                    var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
-                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
-                    $('#btnFindBS').click();
-                    ctlSidebar.on('shown', function () {
-                        $('#ActivateMenu').html("Close Menu")
-                    });
-                    ctlSidebar.show();
-                }else{
-                    var cleaned_clicked_BSCode = clicked_BSCode.toString()
-                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
-                    $('#btnFindBS').click();
-                    ctlSidebar.on('shown', function () {
-                        $('#ActivateMenu').html("Close Menu")
-                    });
-                    ctlSidebar.show();
-                }
-            }
+            // --------------------------------------------------------------------------            
 
             // 1) Function
             // - Creates the Tooltip for the Bus Stop Points. Red = + tap-in. Blue = - Tap-in
             // - Also helps build the auto-complete list of BS Codes
             function returnBusStopMarker(json,latlng){
                 var att = json.properties;
-                
                 
                 if (att.TOTAL_TAP_IN_VOLUME - att.TOTAL_TAP_OUT_VOLUME >=0){
                     var clrBS = "Red";
@@ -636,7 +520,7 @@
                 + "<h6>(BS " + BSCode_Raw +")</h6><br>" 
                 + "<h6> Tap-in: "+att.TOTAL_TAP_IN_VOLUME + "</h6>"
                 + "<h6> Tap-out: "+att.TOTAL_TAP_OUT_VOLUME + "</h6>"
-                    ).on('click',busStopClick)
+                    )
             }
 
             // 2.1) Function
@@ -695,9 +579,31 @@
                 testBSCode(input);
             });
 
-            // 6) jQuery to extract user input.
-            $("#btnFindBS").click(function(){
-                
+            // 6.1) Function: When user clicks on a bus stop marker.
+            function busStopClick(e){
+
+                var clicked_BSCode = e.layer['feature']['properties']['PT_CODE']
+                var clicked_Description = e.layer['feature']['properties']['Description']
+                var clicked_tapIn = e.layer['feature']['properties']['TOTAL_TAP_IN_VOLUME']
+                var clicked_tapOut = e.layer['feature']['properties']['TOTAL_TAP_OUT_VOLUME']
+                if(clicked_BSCode.toString().length === 4){
+                    var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
+                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
+                }else{
+                    var cleaned_clicked_BSCode = clicked_BSCode.toString()
+                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
+
+                }  
+                refreshInfo();
+                ctlSidebar.show();
+                ctlSidebar.on('shown', function () {
+                    $('#ActivateMenu').html("Close Menu")
+                });
+            }
+
+            // 6.2) Function: To trigger info update based on BS keyed in.
+            function refreshInfo(){
+               
                 // Removes the previous content of the HeatMap and Bus Arrival Elements.    
                 $("#heatMapLoading").empty();
                 $("#BusArrival_Info").empty();
@@ -728,24 +634,39 @@
                             var i,svcs;
                             var text = ""; 
                             // Bus Arrival Table
-                            $('#busStopData_Loading').html("<h5><i>Loading......</i></h5>") // Show loading in place of an empty space.
 
                             for (i=0;i<data["Number_Svcs"];i++) {
                                 if(i === 0){
+                                    var arrivalTime = data["ArrivalTime"][0];
+                                    if (arrivalTime.includes("ARR")){
+                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
+                                    } else if ((arrivalTime.includes("1 min")&& arrivalTime.charAt(1) === " ")){ // Ensures that 11 min does not trigger
+                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
+                                    } else {
+                                        var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
+                                    }
                                     // To register header and the first row
                                     text +="<tr>"+"<th style='min-width:80px'>Services</th>"+"<th style='min-width:80px'>Contract</th>"+"<th style='min-width:80px'>Direction</th>"+"<th style='min-width:80px'>Arrival</th>"+"</tr>"
                                         +"<tr>"
-                                        +"<td>"+data["Services"][0]+"</td>"
-                                        +"<td>"+data["Packages"][0]+"</td>"
-                                        +"<td>"+data["Direction"][0]+"</td>"
-                                        +"<td>"+data["ArrivalTime"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["Services"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["Packages"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["Direction"][0]+"</td>"
+                                        +html_arrivalTime
                                         +"</tr>"
                                 }else{
+                                    var arrivalTime = data["ArrivalTime"][i];
+                                    if (arrivalTime.includes("ARR")){
+                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                    } else if ((arrivalTime.includes("1 min")&& arrivalTime.charAt(1) === " ")){ // Ensures that 11 min does not trigger
+                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                    } else {
+                                        var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                    }
                                     text +="<tr>"
-                                    +"<td>"+data["Services"][i]+"</td>"
-                                    +"<td>"+data["Packages"][i]+"</td>"
-                                    +"<td>"+data["Direction"][i]+"</td>"
-                                    +"<td>"+data["ArrivalTime"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["Services"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["Packages"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["Direction"][i]+"</td>"
+                                    +html_arrivalTime
                                     +"</tr>"
                                 }
 
@@ -824,7 +745,8 @@
                             Plotly.newPlot('heatMapLoading', plot_data,layout,config);
                         })
                     })
-                    
+                
+                // Goes through GeoJson to find the layer of the respective BSCode.
                 var lyr = returnBSbyBSCODE(BSCODE);
                 if (lyr){
                     if (lyrSearch){
@@ -832,6 +754,13 @@
                     }
                     lyrSearch = L.geoJSON(lyr.toGeoJSON(),{style:{color:'red',weight:10,opacity:0.5}}).addTo(mymap);
                     mymap.setView(lyr._latlng, 17); // Zoom to marker
+
+                    // Create: Marker of selected bus stop
+                    if (clickedBS_marker) { // Remove only if clickedBS_marker is set.
+                        clickedBS_marker.remove();
+                    }
+                    clickedBS_marker = L.marker(lyr._latlng, {icon: clickedBS,zIndexOffset: 2000}).addTo(mymap);
+    
                     var att = lyr.feature.properties;
                     if(att.PT_CODE.toString().length === 4){
                         var BSCode_Raw = "0"+att.PT_CODE.toString() // Solves the problem of GeoJson in wrong BSCode Format.
@@ -842,17 +771,19 @@
                         "<h5>"+att.Description+"</h5>"
                         +"<h6>(BS "+BSCode_Raw+")</h6>"
                         )
-                    
+                    /*
                     featureDrawnItems.clearLayers();
                     featureDrawnItems.addLayer(lyr);
+                    */
                 } else {
                     $("#divProjectError").html("***** BS Code Not Found! *****")
                 }
-                
-            });
-
+            }
 
             // 7) Event Handler
+            // Event handler: When user presses the 'Find Bus Stop' button.
+            $("#btnFindBS").click(refreshInfo);
+
             // Radio Button click (Weekends/Holiday or Weekday)
             $("input[name=fltBS]").click(function(){
                 arBSCodes = [];
@@ -990,7 +921,7 @@
                     spaces = spaces + " ";
                 }
                 layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
-                {repeat: false, center: true,offset:((-1)*(Math.floor(Math.random() * (70 - 4)) + 4)), attributes: {fill: '#990000','font-weight': 'bold','font-size': '18'}})
+                {repeat: false, center: true,offset:((-2)*(Math.floor(Math.random() * (35 - 1)) + 1)), attributes: {fill: '#990000','font-weight': 'bold','font-size': '18'}})
             }
 
             // filter
