@@ -918,7 +918,9 @@
                 return "<h4><strong>" + att.number + "</strong></h4>"
             }
             
-            var offsetMultiply = 0;
+            var offsetMultiply = 1;
+            var randomChar = 0;
+            var previousSvc = "";
             // onEachFeature: Uses Textpath plug-in to generation route direction.
             // https://github.com/makinacorpus/Leaflet.TextPath
             function processDirections(json,layer){
@@ -926,17 +928,26 @@
                 if (mymap.getZoom()>=16){
                     var i;
                     var spaces = " "
-                    var randomChar = Math.floor(Math.random() * 50);
-                    for (i = 0; i<=randomChar;i++){
+                    
+                    if (previousSvc !== json.properties.number){
+                        randomChar += 10;
+                        offsetMultiply +=1;
+                    }
+                    if (randomChar === 30){
+                        randomChar = 0;
+                    }
+                    // var randomChar = Math.floor(Math.random() * 50);
+                    for (i = 0; i<=randomChar;i+=2){
                         spaces = spaces + " ";
                     }
                     // ((-5)*(Math.floor(Math.random() * (10 - 1)) + 1))
-                    offsetMultiply +=1;
-                    if (offsetMultiply === 10){
+                    if (offsetMultiply === 8){
                         offsetMultiply = 1;
                     }
-                    layer.setText(spaces + '  ►  ' + json.properties.number + '  ►  ', 
-                    {repeat: false, center: true,offset: (-5)*offsetMultiply, attributes: {fill: '#990000','font-weight': 'bold','font-size': '14'}})                           
+                    console.log(spaces + '--►- ' + json.properties.number + ' -►')
+                    layer.setText(spaces + '--►- ' + json.properties.number + ' -►', 
+                    {repeat: false, center: true,offset: (-8)*offsetMultiply, attributes: {fill: '#990000','font-weight': 'bold','font-size': '14'}})   
+                    previousSvc = json.properties.number                        
                 }
             }
 
