@@ -1,17 +1,3 @@
-/* #loader{
-    position: fixed;
-    left:0;
-    top:0;
-      width: 100%;
-      height: 100vh;
-    background:black url('https://icon-library.net/images/loading-gif-icon/loading-gif-icon-28.jpg'); 
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 5000;
-    display: block;
-    margin: 0 auto;
-  } */
-
 html {
       background-color: #343a40
 }
@@ -82,6 +68,15 @@ html {
     border-radius: 5px;
 }
 
+/* Radio Buttons: Filtering of BCM package */
+#divSelectPackage{
+    background-color: #ffcac2;
+    padding: 10px;
+    border: 2px solid grey;
+    border-radius: 5px;
+
+}
+
 .errorMsg {
     padding:0;
     text-align:center;
@@ -130,3 +125,9 @@ html {
     right: 5vw;
     width: 30vw;
 }
+
+#busStopData_Loading{
+    text-align: center
+}
+
+tr:hover {background-color:#000000;}

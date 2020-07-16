@@ -5,16 +5,14 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
-        <title>Bus Ridership (May 2020)</title>
+        <title>Bus Ridership</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='src/leaflet.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/css/bootstrap.css') }}">
 
         <!-- Plug-ins -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.Pan.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.Zoomslider.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.MousePosition.css') }}">
         <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/easy-button.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/L.Control.Sidebar.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/leaflet-opencage/src/css/L.Control.OpenCageSearch.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/plugins/MarkerCluster/MarkerCluster.css') }}">
@@ -23,11 +21,9 @@
         <script src = "{{ url_for('static', filename='src/leaflet-src.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/jquery-3.5.1.min.js')}}"></script>
         <!-- General Plug-ins -->
-        <script src = "{{ url_for('static', filename='src/plugins/L.Control.Pan.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/L.Control.Zoomslider.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/L.Control.MousePosition.js')}}"></script>
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
-        <script src="{{ url_for('static', filename='src/plugins/easy-button.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/L.Control.Sidebar.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/leaflet-opencage/src/js/L.Control.OpenCageSearch.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/leaflet-providers.js')}}"></script>
@@ -35,6 +31,7 @@
         <script src = "{{ url_for('static', filename='src/plugins/leaflet.sprite.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/MarkerCluster/leaflet.markercluster.js')}}"></script>
         <script src = "{{ url_for('static', filename='src/plugins/leaflet.geometryutil.js')}}"></script>
+        <script src = "{{ url_for('static', filename='src/plugins/leaflet.textpath.js')}}"></script>
         <!-- ---------------------------------------------------- -->
         <!-- FontAwesome Icons -->
         <!-- <link href="{{ url_for('static', filename='https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')}}" rel="stylesheet"> -->
@@ -44,27 +41,9 @@
         <script src = "{{ url_for('static', filename='src/plugins/leaflet.awesome-markers.min.js')}}"></script>
         <!-- ---------------------------------------------------- -->
 
-        <!-- Start: Leaflet Style Editor -->
-        <script src="https://cdn.jsdelivr.net/npm/leaflet-styleeditor@latest/dist/javascript/Leaflet.StyleEditor.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-styleeditor@latest/dist/css/Leaflet.StyleEditor.min.css" />
-        <!-- ---------------------------------------------------- -->
-
-        <!-- Start: Leaflet draw Plugin -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-        <!-- ---------------------------------------------------- -->
-
-        <!-- Start: leaflet-omnivore -->
-        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
-        <!-- ---------------------------------------------------- -->
-
         <!-- Start: jQuery - AutoComplete -->
         <link rel="stylesheet" href="{{ url_for('static', filename='src/jQuery/jquery-ui.min.css')}}">
         <script src = "{{ url_for('static', filename='src/jQuery/jquery-ui.min.js')}}"></script>
-        <!-- ---------------------------------------------------- -->
-        
-        <!-- Turf.js -->
-        <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
         <!-- ---------------------------------------------------- -->
 
         <!-- HTML's Style Sheet -->
@@ -72,13 +51,7 @@
 
         <!-- Plot.js -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        
-        <!-- geoSearch https://github.com/smeijer/leaflet-geosearch -->
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css"
-        />
-        <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+
 
     </head>
     <body>
@@ -87,7 +60,7 @@
             <img src="{{ url_for('static', filename='img/loading-gif2.gif')}}" alt="loading...">
         </div> -->
         <nav id="navbar" class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Bus Ridership</a>
+            <a class="navbar-brand" href="#">Bus Ridership (Jun 2020)</a>
             <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Open Menu</button>
         </nav>
 
@@ -110,7 +83,64 @@
                         <div class="" id="divBSData"></div>
                         <div id="heatMapLoading"></div>
                         <div id = "BusArrival_Info"></div>
+                        <div id="busStopData_Loading">
+                            <h6></h6>
+                        </div>
                     </div> 
+                </div>
+
+                <div id="divSelectPackage" class="col-xs-12">
+                    <div id="divSelectPackage_Label" class="text-center col-xs-12">
+                        <h4>Filter: Bus Routes by Package</h4>
+                    </div>
+                    <!-- RADIO BUTTONS -->
+                    <div id="divSelectPackage_Radio" class="col-xs-12">
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="NONE" checked> <strong>Show No Routes</strong>
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT200 - Bulim"> PT200 - Bulim
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT201 - Loyang"> PT201 - Loyang
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT202 - Seletar"> PT202 - Seletar
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT203 - Bukit Merah"> PT203 - Bukit Merah
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT206 - Sengkang – Hougang"> PT206 - Sengkang – Hougang
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT207 - Tampines"> PT207 - Tampines
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT208 - Bishan – Toa Payoh"> PT208 - Bishan – Toa Payoh
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT209 - Serangoon - Eunos"> PT209 - Serangoon - Eunos
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT210 - Clementi"> PT210 - Clementi
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT211 - Bedok"> PT211 - Bedok
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT212 - Jurong West"> PT212 - Jurong West
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT213 - Sembawang-Yishun"> PT213 - Sembawang-Yishun
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT215 - Choa Chu Kang-Bukit Panjang"> PT215 - Choa Chu Kang-Bukit Panjang
+                        </div>
+                        <div class="col-l-12">
+                            <input type="radio" name ='flt_Package' value="PT216 - Woodlands"> PT216 - Woodlands
+                        </div>
+                    </div>               
                 </div>
 
                 <div id="divProject2" class="col-xs-12">
@@ -201,7 +231,7 @@
             // Ridership Layer
             var ridership_geoJson;
             // Feature Group
-                var featureDrawnItems;
+            var featureDrawnItems;
             // Leaflet Plugins
             var ctlZoomslider; // Zoom Slider: http://kartena.github.io/Leaflet.zoomslider/
             var ctlMousePosition; // Mouse Position: https://github.com/ardhi/Leaflet.MousePosition
@@ -216,6 +246,8 @@
             var iconRedSprite;
             var iconVioletSprite;
             var currentLocationIcon;
+            var clickedBS;
+            var clickedBS_marker;
             // Marker Cluster - Ridership
             var lyrMarkerCluster
             // Polygon layer - District
@@ -227,9 +259,13 @@
             var today = new Date();
             var TIME_PER_HOUR = today.getHours() // Initialise as current hour
             selectElement('Time_FilterBS',today.getHours()) // Update the Drop-down Menu as Current Hour
+            // Routes Layer
+            var geojson_Routes
+            var layer_Routes
 
             var preloader = document.getElementById('loader');
 
+            
             // Async to store large ridership geojson data.
             function httpGetAsync(theUrl, callback) {
                 var xmlHttp = new XMLHttpRequest();
@@ -245,9 +281,7 @@
                 xmlHttp.open("GET", theUrl, true); // true for asynchronous
                 xmlHttp.send(null);
             }
-              
             
-
             // Programmatically Obtain Selected Time.
             // https://stackoverflow.com/questions/78932/how-do-i-programmatically-set-the-value-of-a-select-box-element-using-javascript
             function selectElement(id, valueToSelect) {    
@@ -264,7 +298,8 @@
                 {
                     center: [1.3649222, 103.8125610],
                     zoom:12,
-                    zoomControl:false
+                    zoomControl:false,
+                    zoomSnap:0
                 });
                 // ***** Attribution *****
                 ctlAttribute = L.control.attribution({position:"bottomleft"});
@@ -279,6 +314,7 @@
                 iconRedSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'red',prefix:'fa',iconColor:'black'})
                 iconVioletSprite = L.AwesomeMarkers.icon({icon:'bus',markerColor:'blue',prefix:'fa',iconColor:'white',spin:false})
                 currentLocationIcon = L.AwesomeMarkers.icon({icon:'street-view',markerColor:'orange',prefix:'fa',iconColor:'black',spin:false})
+                clickedBS = L.AwesomeMarkers.icon({icon:'star',markerColor:'purple',prefix:'fa',iconColor:'black',spin:true})
                 //----------------------------------------------------
                 
                 //----------------------------------------------------
@@ -299,7 +335,7 @@
 
                 // Layer 1: Ridership
                 lyrMarkerCluster = L.markerClusterGroup({ disableClusteringAtZoom: 16 });
-                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
+                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data_jun2020.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
                 ridership_geoJson.on('data:loaded',function(){ // once data loaded
                     arBSCodes.sort();
                     $("#loader").fadeOut("slow");//Loading Animation
@@ -310,36 +346,28 @@
                     lyrMarkerCluster.addTo(mymap);
                     mymap.fitbounds(ridership_geoJson.getBounds());
                 });
-                
-
+                // Event handler: When user clicks on a bus stop marker.
+                ridership_geoJson.on('click',function(e){
+                    busStopClick(e);
+                });
+                /*
                 // Layer 2: Drawing Features
                 featureDrawnItems = new L.featureGroup();
                 featureDrawnItems.addTo(mymap);
+                */
 
                 // Layer 3: District (2019)
                 lyrDistrict = L.geoJson.ajax("{{url_for('static', filename='/data/PlanningBoundary_2019.geojson')}}",{style:styleRegions,onEachFeature:processRegions, filter:filterDistricts}).addTo(mymap)
+
+                // Layer 4: Routes by Packages
+                layer_Routes = L.geoJson.ajax("{{url_for('static', filename='/data/routes_v2.geojson')}}",{style: styleBusSvcs,onEachFeature:processDirections,filter:filterBusSvcs}).bindPopup(returnBusSvcs).addTo(mymap)
+
+                // Checks final zoom level everytime there is a change in zoom
+                mymap.on('zoomend',function(){
+                    layer_Routes.refresh()
+                })
                 // ----------------------------------------------------------------------------------
 
-                //----------------------------------------------------
-                // SETUP: LAYER CONTROL
-                //----------------------------------------------------
-                // BaseMaps
-                objBasemaps = {
-                    "Open Street Maps" : lyrOSM,
-                    "Topo Map": lyrTopo,
-                    "One Map Default": lyrOneMapDefault,
-                    "Imagery": lyrImagery,
-                    "Transport":lyrTransport
-                };
-                // Overlays
-                objOverlays = {
-                    "Drawn Items":featureDrawnItems,
-                    'Planning Boundary (2019)':lyrDistrict,
-                    "Bus Stops":lyrMarkerCluster
-                };
-                
-                // ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
-                //----------------------------------------------------
 
                 // ----------------------------------------------------------------------
                 // PLUG-INS
@@ -356,9 +384,11 @@
                 // Menu Toggle to activate sidebar
                 $("#ActivateMenu").click(function(){
                     ctlSidebar.toggle();
+                    // If Menu is already shown, make the button show text: "Close Menu"
                     ctlSidebar.on('shown', function () {
                         $('#ActivateMenu').html("Close Menu")
                     });
+                    // If Menu is NOT already shown, make the button show text: "Open Menu"
                     ctlSidebar.on('hidden', function () {
                         $('#ActivateMenu').html("Open Menu")
                     });
@@ -369,69 +399,6 @@
 
                 // ***** OpenCage Search Location *****
                 ctlSearch = L.Control.openCageSearch({key:'17d0c3cd10484522b857c1814cd9df16',limit:10}).addTo(mymap); // Key is from OpenCage account: NightFury555 GitHub Account.
-                
-
-                /*
-                // ***** GeoSearch *****
-                const search = new GeoSearch.GeoSearchControl({
-                    provider: new GeoSearch.OpenStreetMapProvider(),
-                    style: 'bar',
-                    showMarker: true, // optional: true|false  - default true
-                    showPopup: false, // optional: true|false  - default false
-                    marker: {
-                      // optional: L.Marker    - default L.Icon.Default
-                      icon: new L.Marker,
-                      draggable: false,
-                    },
-                    popupFormat: ({ query, result }) => result.label, // optional: function    - default returns result label
-                    maxMarkers: 1, // optional: number      - default 1
-                    retainZoomLevel: false, // optional: true|false  - default false
-                    animateZoom: true, // optional: true|false  - default true
-                    autoClose: false, // optional: true|false  - default false
-                    searchLabel: 'Enter address...', // optional: string      - default 'Enter address'
-                    keepResult: false, // optional: true|false  - default false
-                  });
-                  mymap.addControl(search);
-
-                  mymap.on('geosearch/showlocation', function(result) {
-                    console.log(result);
-                   });
-                */
-
-                // ***** Leaflet Draw Plug-in *****
-                ctlDraw = new L.Control.Draw({
-                    draw:{
-                        polyline: false,
-                        circle:true,
-                        polygon:false,
-                        rectangle:false,
-                        marker:true
-                    },
-                    edit:{
-                        featureGroup:featureDrawnItems,
-                        remove:true // Delete button
-                    }
-                });
-                mymap.addControl(ctlDraw);
-
-                mymap.on('draw:created',function(e){ // shapes drawn will be added to 'featureGroup1'
-                    var llRef = e.layer.getLatLng();
-                    var strTable = "<H6>Nearest Bus Stop: </H6><table class = 'table table-dark'>";
-                    strTable +="<tr><th>BS Code</th><th>Description</th><th>Distance</th><th>Direction</th></tr>";
-                    var nearestBS = returnClosestlayer(ridership_geoJson,llRef);
-                    strTable +="<tr><td>"+nearestBS.att.PT_CODE+"</td><td>"+nearestBS.att.Description+"</td><td>"+nearestBS.distance.toFixed(0)+"m</td><td>"+nearestBS.bearing.toFixed(0)+"°</td></tr>";
-                    strTable +="</table>";
-                    featureDrawnItems.addLayer(e.layer.bindPopup(strTable,{maxWidth:400}));
-
-                })
-
-                // ***** Style Editor *****
-                mymap.addControl(L.control.styleEditor())
-                // ----------------------------------------------------------------------
-
-                // ----------------------------------------------------------------------
-                // jQuery EVENT Handlers: HTML Methods to Create Controls / On mouse and Keyboard Interactions
-                // ----------------------------------------------------------------------
                 
                 // ***** LOCATION CONTROL *****
                 // When location is found.
@@ -482,7 +449,7 @@
                 });
 
 
-                // ---------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------
                     
             });
             // ***** END OF MAP COMPONENTS *****         
@@ -531,35 +498,13 @@
             // 1) RIDERSHIP Functions
             // Filtering Properties of RIDERSHIP geoJson points.
             // The input variables come from the Functions available for GeoJson! See Leaflet Docs!!
-            // ---------------------------------------------------------------------------
-            function busStopClick(e){
-                var clicked_BSCode = e.target['feature']['properties']['PT_CODE']
-                var clicked_Description = e.target['feature']['properties']['Description']
-                if(clicked_BSCode.toString().length === 4){
-                    var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
-                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
-                    $('#btnFindBS').click();
-                    ctlSidebar.on('shown', function () {
-                        $('#ActivateMenu').html("Close Menu")
-                    });
-                    ctlSidebar.show();
-                }else{
-                    var cleaned_clicked_BSCode = clicked_BSCode.toString()
-                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
-                    $('#btnFindBS').click();
-                    ctlSidebar.on('shown', function () {
-                        $('#ActivateMenu').html("Close Menu")
-                    });
-                    ctlSidebar.show();
-                }
-            }
+            // --------------------------------------------------------------------------            
 
             // 1) Function
             // - Creates the Tooltip for the Bus Stop Points. Red = + tap-in. Blue = - Tap-in
             // - Also helps build the auto-complete list of BS Codes
             function returnBusStopMarker(json,latlng){
                 var att = json.properties;
-                
                 
                 if (att.TOTAL_TAP_IN_VOLUME - att.TOTAL_TAP_OUT_VOLUME >=0){
                     var clrBS = "Red";
@@ -578,10 +523,11 @@
                 arBSCodes.push(BSCode_Raw +": " + att.Description.toString()) // Push each PT_CODE into Array.
                 return L.marker(latlng,{icon:iconBS}).bindTooltip(
                 "<h4><strong>" + att.Description + "</strong></h4>"
-                + "<h6>(BS " + BSCode_Raw +")</h6><br>" 
+                + "<h6>(BS " + BSCode_Raw +")</h6><br>"
+                + "<h6> GRC/SMC: "+att.GRC_SMC + "</h6>"
                 + "<h6> Tap-in: "+att.TOTAL_TAP_IN_VOLUME + "</h6>"
                 + "<h6> Tap-out: "+att.TOTAL_TAP_OUT_VOLUME + "</h6>"
-                    ).on('click',busStopClick)
+                    )
             }
 
             // 2.1) Function
@@ -640,14 +586,39 @@
                 testBSCode(input);
             });
 
-            // 6) jQuery to extract user input.
-            $("#btnFindBS").click(function(){
+            // 6.1) Function: When user clicks on a bus stop marker.
+            function busStopClick(e){
+
+                var clicked_BSCode = e.layer['feature']['properties']['PT_CODE']
+                var clicked_Description = e.layer['feature']['properties']['Description']
+                var clicked_tapIn = e.layer['feature']['properties']['TOTAL_TAP_IN_VOLUME']
+                var clicked_tapOut = e.layer['feature']['properties']['TOTAL_TAP_OUT_VOLUME']
+                if(clicked_BSCode.toString().length === 4){
+                    var cleaned_clicked_BSCode = "0"+clicked_BSCode.toString() // Solves the problem of GeoJson in wrong BSCode Format.
+                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); // https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
+                }else{
+                    var cleaned_clicked_BSCode = clicked_BSCode.toString()
+                    $("#txtFindBS").val(cleaned_clicked_BSCode+": "+clicked_Description); //https://stackoverflow.com/questions/5709258/jquery-change-input-text-value
+
+                }  
+                refreshInfo();
+                ctlSidebar.show();
+                ctlSidebar.on('shown', function () {
+                    $('#ActivateMenu').html("Close Menu")
+                });
+            }
+
+            // 6.2) Function: To trigger info update based on BS keyed in.
+            function refreshInfo(){
+               
+                // Removes the previous content of the HeatMap and Bus Arrival Elements.    
+                $("#heatMapLoading").empty();
+                $("#BusArrival_Info").empty();
+                $('#busStopData_Loading').html("<h5><i>Loading...</i></h5>") // Show loading in place of an empty space.
+
                 var appdir='/';
                 var input = $("#txtFindBS").val(); // Extract User input.
                 var BSCODE = (input.substring(0,input.indexOf(":",0))) //Trim from 0 to point where ":" is found.
-
-                // Removes the previous content of the HeatMap Elements.    
-                $("#heatMapLoading").empty();
 
                 fetch(`${window.origin}/BusArrival`, {
                     method: "POST",
@@ -670,28 +641,47 @@
                             var i,svcs;
                             var text = ""; 
                             // Bus Arrival Table
+
                             for (i=0;i<data["Number_Svcs"];i++) {
                                 if(i === 0){
+                                    var arrivalTime = data["ArrivalTime"][0];
+                                    if (arrivalTime.includes("ARR")){
+                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
+                                    } else if ((arrivalTime.includes("1 min")&& arrivalTime.charAt(1) === " ")){ // Ensures that 11 min does not trigger
+                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
+                                    } else {
+                                        var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
+                                    }
                                     // To register header and the first row
                                     text +="<tr>"+"<th style='min-width:80px'>Services</th>"+"<th style='min-width:80px'>Contract</th>"+"<th style='min-width:80px'>Direction</th>"+"<th style='min-width:80px'>Arrival</th>"+"</tr>"
                                         +"<tr>"
-                                        +"<td>"+data["Services"][0]+"</td>"
-                                        +"<td>"+data["Packages"][0]+"</td>"
-                                        +"<td>"+data["Direction"][0]+"</td>"
-                                        +"<td>"+data["ArrivalTime"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["Services"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["Packages"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["Direction"][0]+"</td>"
+                                        +html_arrivalTime
                                         +"</tr>"
                                 }else{
+                                    var arrivalTime = data["ArrivalTime"][i];
+                                    if (arrivalTime.includes("ARR")){
+                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                    } else if ((arrivalTime.includes("1 min")&& arrivalTime.charAt(1) === " ")){ // Ensures that 11 min does not trigger
+                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                    } else {
+                                        var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                    }
                                     text +="<tr>"
-                                    +"<td>"+data["Services"][i]+"</td>"
-                                    +"<td>"+data["Packages"][i]+"</td>"
-                                    +"<td>"+data["Direction"][i]+"</td>"
-                                    +"<td>"+data["ArrivalTime"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["Services"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["Packages"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["Direction"][i]+"</td>"
+                                    +html_arrivalTime
                                     +"</tr>"
                                 }
 
                             }
                             document.getElementById("BusArrival_Info").innerHTML = "<table style='width:100%' class='table table-striped table-dark table-bordered table-sm'>"+text+"</table>";
                             
+                            $('#busStopData_Loading').html("<h5><i>Loading.........</i></h5>") // Show loading in place of an empty space.
+
                             // Plotly z list -  based on BSCODE selected
                             var z_list = [];
                             for (i = 23; i >=0; i--){
@@ -758,11 +748,12 @@
                                 }
                             };
                             var config = {responsive: true,displayModeBar: false}
+                            $('#busStopData_Loading').html("") // Make empty the loading div now that the Heatmap and Bus Arrival Table have completed loading.
                             Plotly.newPlot('heatMapLoading', plot_data,layout,config);
-
                         })
                     })
-
+                
+                // Goes through GeoJson to find the layer of the respective BSCode.
                 var lyr = returnBSbyBSCODE(BSCODE);
                 if (lyr){
                     if (lyrSearch){
@@ -770,27 +761,38 @@
                     }
                     lyrSearch = L.geoJSON(lyr.toGeoJSON(),{style:{color:'red',weight:10,opacity:0.5}}).addTo(mymap);
                     mymap.setView(lyr._latlng, 17); // Zoom to marker
-                    var att = lyr.feature
-                    .properties;
+
+                    // Create: Marker of selected bus stop
+                    if (clickedBS_marker) { // Remove only if clickedBS_marker is set.
+                        clickedBS_marker.remove();
+                    }
+                    clickedBS_marker = L.marker(lyr._latlng, {icon: clickedBS,zIndexOffset: 2000}).addTo(mymap);
+    
+                    var att = lyr.feature.properties;
                     if(att.PT_CODE.toString().length === 4){
                         var BSCode_Raw = "0"+att.PT_CODE.toString() // Solves the problem of GeoJson in wrong BSCode Format.
                     }else{
                         BSCode_Raw = att.PT_CODE.toString()
                     }
+
                     $("#divBSData").html(
                         "<h5>"+att.Description+"</h5>"
                         +"<h6>(BS "+BSCode_Raw+")</h6>"
+                        +"<h6>GRC/SMC: "+att.GRC_SMC+"</h6>"
                         )
-                    
+                    /*
                     featureDrawnItems.clearLayers();
                     featureDrawnItems.addLayer(lyr);
+                    */
                 } else {
                     $("#divProjectError").html("***** BS Code Not Found! *****")
                 }
-            });
-
+            }
 
             // 7) Event Handler
+            // Event handler: When user presses the 'Find Bus Stop' button.
+            $("#btnFindBS").click(refreshInfo);
+
             // Radio Button click (Weekends/Holiday or Weekday)
             $("input[name=fltBS]").click(function(){
                 arBSCodes = [];
@@ -890,6 +892,79 @@
             });
             // ---------------------------------------------------------------------------
 
+            // ---------------------------------------------------------------------------
+            // Function 3: Bus Routes by BCM Packages
+            // Selected based on BCM package radio buttons.
+            // ---------------------------------------------------------------------------
+
+            $("input[name=flt_Package]").click(function(){
+                layer_Routes.refresh(); // Dyanmically replot the route polylines.
+            });
+
+
+            // style: To create randomised route colors.
+            function styleBusSvcs(json){
+                var max = 8;
+                var min = 5;
+                return {
+                    color:'#'+Math.random().toString(16).substr(2,6),
+                    weight: Math.floor(Math.random() * (max - min)) + min,
+                    opacity: 0.4
+                };
+            }
+
+            // Bind Pop-up: For Pop-up Description on each bus service polyline
+            function returnBusSvcs(layer){
+                var att = layer.feature.properties;
+                
+                return "<h4><strong>" + att.number + "</strong></h4>"
+            }
+            
+            var offsetMultiply = 1;
+            var randomChar = 0;
+            var previousSvc = "";
+            // onEachFeature: Uses Textpath plug-in to generation route direction.
+            // https://github.com/makinacorpus/Leaflet.TextPath
+            function processDirections(json,layer){
+                // Only renders the route directions if the zoom level is above 14.
+                if (mymap.getZoom()>=16){
+                    var i;
+                    var spaces = " "
+                    
+                    if (previousSvc !== json.properties.number){
+                        randomChar += 10;
+                        offsetMultiply +=1;
+                    }
+                    if (randomChar === 30){
+                        randomChar = 0;
+                    }
+                    // var randomChar = Math.floor(Math.random() * 50);
+                    for (i = 0; i<=randomChar;i+=2){
+                        spaces = spaces + "  ";
+                    }
+                    // ((-5)*(Math.floor(Math.random() * (10 - 1)) + 1))
+                    if (offsetMultiply === 8){
+                        offsetMultiply = 1;
+                    }
+                    layer.setText(spaces + '--►- ' + json.properties.number + ' -►', 
+                    {repeat: false, center: true,offset: (-8)*offsetMultiply, attributes: {fill: '#990000','font-weight': 'bold','font-size': '14'}})   
+                    previousSvc = json.properties.number                        
+                }
+            }
+
+            // filter
+            // Radio Buttons: Select BCM Package
+            function filterBusSvcs(layer){          
+                var att = layer.properties;
+                var Selected_Package = $("input[name=flt_Package]:checked").val();
+                if (att.package == Selected_Package) {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }
+            // ---------------------------------------------------------------------------
         </script>
         
 

@@ -20,7 +20,7 @@ BusService_List["Bus Service No."] = BusService_List["Bus Service No."].astype(s
 df_BusStop = BusStopList_df()
 
 # Pre-load Ridership Data
-with open(dir_path+"/static/data/LTAMall_Ridership_Data.geojson") as f:
+with open(dir_path+"/static/data/LTAMall_Ridership_Data_jun2020.geojson") as f:
     #ridership_data = geojson.load(f)
     ridership_data = json.load(f)
 
@@ -62,7 +62,7 @@ def BusArrival_Function():
         ArrivalTime = int(round(ArriveLah_Raw_BusArrival["services"][i]["next"]["duration_ms"]/(60*1000),0))
         BusType = ArriveLah_Raw_BusArrival["services"][i]["next"]["type"]
         if ArrivalTime <= 1:
-            ArrivalTime = "<strong> -- Arr -- </strong>"
+            ArrivalTime = "ARR" + " ("+ BusType +")"
         else:
             ArrivalTime = str(ArrivalTime) + " min" + " ("+ BusType +")"
         ArrivalTime_List.append(ArrivalTime)
