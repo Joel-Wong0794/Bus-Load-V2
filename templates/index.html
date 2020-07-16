@@ -5,7 +5,7 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
-        <title>Bus Ridership (May 2020)</title>
+        <title>Bus Ridership</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='src/leaflet.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='src/css/bootstrap.css') }}">
 
@@ -60,7 +60,7 @@
             <img src="{{ url_for('static', filename='img/loading-gif2.gif')}}" alt="loading...">
         </div> -->
         <nav id="navbar" class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Bus Ridership</a>
+            <a class="navbar-brand" href="#">Bus Ridership (Jun 2020)</a>
             <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Open Menu</button>
         </nav>
 
@@ -335,7 +335,7 @@
 
                 // Layer 1: Ridership
                 lyrMarkerCluster = L.markerClusterGroup({ disableClusteringAtZoom: 16 });
-                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
+                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data_jun2020.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
                 ridership_geoJson.on('data:loaded',function(){ // once data loaded
                     arBSCodes.sort();
                     $("#loader").fadeOut("slow");//Loading Animation
@@ -523,7 +523,8 @@
                 arBSCodes.push(BSCode_Raw +": " + att.Description.toString()) // Push each PT_CODE into Array.
                 return L.marker(latlng,{icon:iconBS}).bindTooltip(
                 "<h4><strong>" + att.Description + "</strong></h4>"
-                + "<h6>(BS " + BSCode_Raw +")</h6><br>" 
+                + "<h6>(BS " + BSCode_Raw +")</h6><br>"
+                + "<h6> GRC/SMC: "+att.GRC_SMC + "</h6>"
                 + "<h6> Tap-in: "+att.TOTAL_TAP_IN_VOLUME + "</h6>"
                 + "<h6> Tap-out: "+att.TOTAL_TAP_OUT_VOLUME + "</h6>"
                     )
@@ -773,9 +774,11 @@
                     }else{
                         BSCode_Raw = att.PT_CODE.toString()
                     }
+
                     $("#divBSData").html(
                         "<h5>"+att.Description+"</h5>"
                         +"<h6>(BS "+BSCode_Raw+")</h6>"
+                        +"<h6>GRC/SMC: "+att.GRC_SMC+"</h6>"
                         )
                     /*
                     featureDrawnItems.clearLayers();
