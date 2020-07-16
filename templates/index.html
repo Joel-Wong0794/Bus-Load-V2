@@ -335,7 +335,7 @@
 
                 // Layer 1: Ridership
                 lyrMarkerCluster = L.markerClusterGroup({ disableClusteringAtZoom: 16 });
-                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data_jun2020.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
+                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data_Jun2020.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
                 ridership_geoJson.on('data:loaded',function(){ // once data loaded
                     arBSCodes.sort();
                     $("#loader").fadeOut("slow");//Loading Animation

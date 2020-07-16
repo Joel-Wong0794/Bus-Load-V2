@@ -20,7 +20,7 @@ BusService_List["Bus Service No."] = BusService_List["Bus Service No."].astype(s
 df_BusStop = BusStopList_df()
 
 # Pre-load Ridership Data
-with open(dir_path+"/static/data/LTAMall_Ridership_Data_jun2020.geojson") as f:
+with open(dir_path+"/static/data/LTAMall_Ridership_Data_Jun2020.geojson") as f:
     #ridership_data = geojson.load(f)
     ridership_data = json.load(f)
 
