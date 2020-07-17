@@ -653,12 +653,16 @@
                                         var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
                                     }
                                     // To register header and the first row
-                                    text +="<tr>"+"<th style='min-width:80px'>Services</th>"+"<th style='min-width:80px'>Contract</th>"+"<th style='min-width:80px'>Direction</th>"+"<th style='min-width:80px'>Arrival</th>"+"</tr>"
+                                    text +="<tr>"+"<th style='min-width:80px'>Services</th>"+"<th style='min-width:80px'>Contract</th>"+"<th style='min-width:80px'>Direction</th>"+"<th style='min-width:80px'>Arrival</th>"+"<th style='min-width:80px'>AM Peak</th>"+"<th style='min-width:80px'>Offpeak</th>"+"<th style='min-width:80px'>PM Peak</th>"+"<th style='min-width:80px'>PM Offpeak</th>"+"</tr>"
                                         +"<tr>"
                                         +"<td style = 'vertical-align: middle'>"+data["Services"][0]+"</td>"
                                         +"<td style = 'vertical-align: middle'>"+data["Packages"][0]+"</td>"
                                         +"<td style = 'vertical-align: middle'>"+data["Direction"][0]+"</td>"
                                         +html_arrivalTime
+                                        +"<td style = 'vertical-align: middle'>"+data["AM_Peak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["AM_Offpeak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["PM_Peak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle'>"+data["PM_Offpeak_Freq"][0]+"</td>"
                                         +"</tr>"
                                 }else{
                                     var arrivalTime = data["ArrivalTime"][i];
@@ -674,6 +678,10 @@
                                     +"<td style = 'vertical-align: middle'>"+data["Packages"][i]+"</td>"
                                     +"<td style = 'vertical-align: middle'>"+data["Direction"][i]+"</td>"
                                     +html_arrivalTime
+                                    +"<td style = 'vertical-align: middle'>"+data["AM_Peak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["AM_Offpeak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["PM_Peak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle'>"+data["PM_Offpeak_Freq"][i]+"</td>"
                                     +"</tr>"
                                 }
 
