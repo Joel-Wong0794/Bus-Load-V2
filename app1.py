@@ -103,10 +103,10 @@ def BusArrival_Function():
         AM_Offpeak_Freq_Raw = BusSvcFreq_List[BusSvcFreq_List["SvcNo_Dest"]==str(Svc_Raw)+"_"+str(Direction_Code)]["AM_Offpeak_Freq"].values[0]
         PM_Peak_Freq_Freq_Raw = BusSvcFreq_List[BusSvcFreq_List["SvcNo_Dest"]==str(Svc_Raw)+"_"+str(Direction_Code)]["PM_Peak_Freq"].values[0]
         PM_Offpeak_Freq_Freq_Raw = BusSvcFreq_List[BusSvcFreq_List["SvcNo_Dest"]==str(Svc_Raw)+"_"+str(Direction_Code)]["PM_Offpeak_Freq"].values[0]
-        AMPeak_List.append(AM_Peak_Freq_Raw)
-        AMOffpeak_List.append(AM_Offpeak_Freq_Raw)
-        PMPeak_List.append(PM_Peak_Freq_Freq_Raw)
-        PMOffpeak_List.append(PM_Offpeak_Freq_Freq_Raw)
+        AMPeak_List.append(AM_Peak_Freq_Raw + " min")
+        AMOffpeak_List.append(AM_Offpeak_Freq_Raw + " min")
+        PMPeak_List.append(PM_Peak_Freq_Freq_Raw + " min")
+        PMOffpeak_List.append(PM_Offpeak_Freq_Freq_Raw + " min")
 
         # Services List
         Service_List.append(Svc_Raw)
