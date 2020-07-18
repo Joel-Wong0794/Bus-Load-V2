@@ -87,12 +87,14 @@ html {
 
 #BusArrival_Info {
     word-wrap: break-word;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     position: relative;
-    padding-top: 30px;
+    padding-top: 0px;
     text-align:center;
+    overflow: scroll;
+    max-width: 40em;
+    max-height: 20em;
 }
-
 
 #divProject4 {
     position: relative;

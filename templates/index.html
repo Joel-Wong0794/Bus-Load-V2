@@ -82,7 +82,7 @@
                         </div>
                         <div class="" id="divBSData"></div>
                         <div id="heatMapLoading"></div>
-                        <div id = "BusArrival_Info"></div>
+                        <div id = "BusArrival_Info" class="container"></div>
                         <div id="busStopData_Loading">
                             <h6></h6>
                         </div>
@@ -653,9 +653,19 @@
                                         var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
                                     }
                                     // To register header and the first row
-                                    text +="<tr>"+"<th style='min-width:80px'>Services</th>"+"<th style='min-width:80px'>Contract</th>"+"<th style='min-width:80px'>Direction</th>"+"<th style='min-width:80px'>Arrival</th>"+"<th style='min-width:80px'>AM Peak</th>"+"<th style='min-width:80px'>Offpeak</th>"+"<th style='min-width:80px'>PM Peak</th>"+"<th style='min-width:80px'>PM Offpeak</th>"+"</tr>"
+                                    text +="<thead>"+"<tr>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000' >Services</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Contract</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Direction</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Arrival</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>AM Peak</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Offpeak</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>PM Peak</th>"
+                                        +"<th style='min-width:80px;position:sticky;top:0;opacity:0.8;z-index:4001; background: #000'>PM Offpeak</th>"+"</tr>" 
+                                        + "</thead>"
+                                        +"<tbody style = ''>"
                                         +"<tr>"
-                                        +"<td style = 'vertical-align: middle'>"+data["Services"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;position:sticky;left:0;opacity:0.8;z-index:4000; background: #000'>"+data["Services"][0]+"</td>"
                                         +"<td style = 'vertical-align: middle'>"+data["Packages"][0]+"</td>"
                                         +"<td style = 'vertical-align: middle'>"+data["Direction"][0]+"</td>"
                                         +html_arrivalTime
@@ -674,7 +684,7 @@
                                         var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
                                     }
                                     text +="<tr>"
-                                    +"<td style = 'vertical-align: middle'>"+data["Services"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;position:sticky;left:0;opacity:0.8;z-index:4000; background: #000'>"+data["Services"][i]+"</td>"
                                     +"<td style = 'vertical-align: middle'>"+data["Packages"][i]+"</td>"
                                     +"<td style = 'vertical-align: middle'>"+data["Direction"][i]+"</td>"
                                     +html_arrivalTime
@@ -683,11 +693,13 @@
                                     +"<td style = 'vertical-align: middle'>"+data["PM_Peak_Freq"][i]+"</td>"
                                     +"<td style = 'vertical-align: middle'>"+data["PM_Offpeak_Freq"][i]+"</td>"
                                     +"</tr>"
+                                    +"</tbody>"
                                 }
 
                             }
+                            // https://stackoverflow.com/questions/15811653/table-with-fixed-header-and-fixed-column-on-pure-css
                             document.getElementById("BusArrival_Info").innerHTML = "<table style='width:100%' class='table table-striped table-dark table-bordered table-sm'>"+text+"</table>";
-                            
+                            // document.getElementById("BusArrival_Info").innerHTML = "<table>"+text+"</table>";
                             $('#busStopData_Loading').html("<h5><i>Loading.........</i></h5>") // Show loading in place of an empty space.
 
                             // Plotly z list -  based on BSCODE selected
