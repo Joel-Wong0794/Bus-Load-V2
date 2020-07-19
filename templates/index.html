@@ -267,22 +267,13 @@
 
             var preloader = document.getElementById('loader');
 
-            
-            // Async to store large ridership geojson data.
-            function httpGetAsync(theUrl, callback) {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function() {
-                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                        callback(JSON.parse(xmlHttp.responseText));
-                        /*
-                        if (callback) {
-                            callback(data);
-                        }  
-                        */  
-                }
-                xmlHttp.open("GET", theUrl, true); // true for asynchronous
-                xmlHttp.send(null);
-            }
+            https://stackoverflow.com/questions/39585950/mobile-keyboard-changes-html-viewport-size
+            $(function() {
+                var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+                var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+                $("html, body").css({"width":w,"height":h});
+                console.log(h);
+            });
             
             // Programmatically Obtain Selected Time.
             // https://stackoverflow.com/questions/78932/how-do-i-programmatically-set-the-value-of-a-select-box-element-using-javascript
