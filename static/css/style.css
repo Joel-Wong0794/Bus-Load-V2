@@ -35,7 +35,7 @@ html {
     background-color: #343a40;
 }
 #mapdiv {
-    height: 93vh;
+    /* height: 93vh; */
     width: 100%;
     left: 0px;
     bottom: 0px;
@@ -45,7 +45,7 @@ html {
 }
 
 #navbar{
-    height: 7vh;
+    /* height: 7vh; */
     top:0px;
     width:100%;
     position: fixed;

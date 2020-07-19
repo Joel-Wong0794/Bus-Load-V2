@@ -266,14 +266,6 @@
             var layer_Routes
 
             var preloader = document.getElementById('loader');
-
-            https://stackoverflow.com/questions/39585950/mobile-keyboard-changes-html-viewport-size
-            $(function() {
-                var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-                var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-                $("html, body").css({"width":w,"height":h});
-                console.log(h);
-            });
             
             // Programmatically Obtain Selected Time.
             // https://stackoverflow.com/questions/78932/how-do-i-programmatically-set-the-value-of-a-select-box-element-using-javascript
@@ -283,6 +275,15 @@
             }
             // j-Query - Only create map once div has been created.
             $(document).ready(function(){
+
+                /* Updating Div height size */
+                // Ensures fixed Div sizes when keyboard is invoked.
+                // Link: https://stackoverflow.com/questions/43702979/mobile-keyboard-pushes-up-content-because-of-an-absolutely-positioned-drawer
+                var windowHeight = $(window).innerHeight();
+                $('body').css({'height':windowHeight});
+                $('mapdiv').css({'height':windowHeight*0.93});
+                $('navbar').css({'height':windowHeight*0.07});
+                /* ... */
 
                 //----------------------------------------------------
                 // Map Initialisation
