@@ -36,14 +36,18 @@ html {
 }
 #mapdiv {
     height: 85vh;
-    width:100%;
-    left: 15px;
+    width: 100%;
+    left: 0px;
     bottom: 0px;
+    top: 7vh;
+    position: fixed;
 }
 
 #navbar{
     height: 7vh;
     width:100%;
+    position: fixed;
+    z-index: 4000;
 }
 
 #overallRow {
