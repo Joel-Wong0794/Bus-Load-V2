@@ -3,12 +3,16 @@ html {
       position: fixed;
 }
 
+body{
+    position:relative;
+    background-color: #343a40;
+}
+
 #loader {
     position: fixed;
     z-index: 5000;
-    top:0;
     left:0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     background: #222222 url('/static/img/Loading-gif2.gif'); 
     display:block;
@@ -38,10 +42,10 @@ html {
 #mapdiv {
     /* height: 93vh; */
     width: 100%;
-    left: 0px;
+    /* left: 0px;
     right:0px;
-    bottom: 0px; 
-    top:7vh;
+    bottom: 0px;  */
+    /* top:7vh; */
     position: fixed;
 }
 

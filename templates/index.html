@@ -280,9 +280,12 @@
                 // Ensures fixed Div sizes when keyboard is invoked.
                 // Link: https://stackoverflow.com/questions/43702979/mobile-keyboard-pushes-up-content-because-of-an-absolutely-positioned-drawer
                 var windowHeight = $(window).innerHeight();
-                $('body, body').css({'height':windowHeight});
-                $('mapdiv').css({'height':windowHeight*0.93,'top':windowHeight*0.07,'bottom':0,'left':0,'right':0});
-                $('navbar').css({'height':windowHeight*0.07});
+                $('html, body').css({'height':windowHeight});
+                
+                $('#mapdiv').css({'height':windowHeight*0.93,'top':windowHeight*0.07,'bottom':0,'left':0,'right':0});
+                $('#navbar').css({'height':windowHeight*0.07});
+                
+                
                 /* ... */
 
                 //----------------------------------------------------
