@@ -42,10 +42,10 @@ body{
 #mapdiv {
     /* height: 93vh; */
     width: 100%;
-    /* left: 0px;
+    left: 3px;
     right:0px;
-    bottom: 0px;  */
-    /* top:7vh; */
+    bottom: 0px; 
+    top:7vh;
     position: fixed;
 }
 
