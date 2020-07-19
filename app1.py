@@ -124,7 +124,7 @@ def BusArrival_Function():
     df_BusArrival = df_BusArrival.merge(BusService_List, left_on="Services",right_on="Bus Service No.", how = "left", indicator = False)
 
     # Concatenate Direction with LoopingDes
-    df_BusArrival['Final_Direction'] = df_BusArrival["Description"] + df_BusArrival["LoopDes"]
+    df_BusArrival['Final_Direction'] = df_BusArrival["Description"] + "<br>" + df_BusArrival["LoopDes"]
 
     # Sort Dataframe by Service, then Package
     df_BusArrival = df_BusArrival.loc[pd.to_numeric(df_BusArrival["Services"], errors='coerce').sort_values(ascending=True).index] #https://stackoverflow.com/questions/47913881/

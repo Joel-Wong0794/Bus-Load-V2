@@ -52,7 +52,6 @@
         <!-- Plot.js -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-
     </head>
     <body>
         <div id="loader"></div>
@@ -395,10 +394,22 @@
                 });
                 // ***** Sidebar V1 *****
                 ctlSidebar = L.control.sidebar('side-bar',{closeButton:false,autoPan:false}).addTo(mymap);
-                ctlMeasure = L.control.polylineMeasure().addTo(mymap);
+                ctlMeasure = L.control.polylineMeasure(options={
+                    position: 'topright',
+                    measureControlLabel: '&#128207;'
+                    
+                }).addTo(mymap);
 
                 // ***** OpenCage Search Location *****
-                ctlSearch = L.Control.openCageSearch({key:'17d0c3cd10484522b857c1814cd9df16',limit:10}).addTo(mymap); // Key is from OpenCage account: NightFury555 GitHub Account.
+                ctlSearch = L.Control.openCageSearch({
+                    key:'17d0c3cd10484522b857c1814cd9df16',
+                    limit:10,
+                    collapsed: false,
+                    expand: 'click',
+                    position:'topleft',
+                    showResultIcons: true,
+                    placeholder: 'Search Location',
+                }).addTo(mymap); // Key is from OpenCage account: NightFury555 GitHub Account.
                 
                 // ***** LOCATION CONTROL *****
                 // When location is found.
@@ -654,44 +665,44 @@
                                     }
                                     // To register header and the first row
                                     text +="<thead>"+"<tr>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000' >Services</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Contract</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Direction</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Arrival</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Freq: AM Peak</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Freq: Offpeak</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Freq: PM Peak</th>"
-                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000'>Freq: PM Offpeak</th>"+"</tr>" 
+                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;left:0;opacity:0.8;z-index:4002;background: #000;font-size: small;vertical-align: middle' >Services</th>"
+                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Contract</th>"
+                                        +"<th style='min-width:120px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Direction</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Arrival</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>AM Peak</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>Offpeak</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>PM Peak</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>PM Offpeak</th>"+"</tr>" 
                                         + "</thead>"
                                         +"<tbody style = ''>"
                                         +"<tr>"
-                                        +"<td style = 'vertical-align: middle;position:sticky;position: -webkit-sticky;left:0;opacity:0.8;z-index:4000; background: #000'>"+data["Services"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["Packages"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["Direction"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;position:sticky;position: -webkit-sticky;left:0;opacity:0.8;z-index:4000; background: darkblue;font-size: small;'>"+data["Services"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Packages"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Direction"][0]+"</td>"
                                         +html_arrivalTime
-                                        +"<td style = 'vertical-align: middle'>"+data["AM_Peak_Freq"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["AM_Offpeak_Freq"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["PM_Peak_Freq"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["PM_Offpeak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Peak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Offpeak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Peak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Offpeak_Freq"][0]+"</td>"
                                         +"</tr>"
                                 }else{
                                     var arrivalTime = data["ArrivalTime"][i];
                                     if (arrivalTime.includes("ARR")){
-                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle;font-size: small;'>"+data["ArrivalTime"][i]+"</td>"
                                     } else if ((arrivalTime.includes("1 min")&& arrivalTime.charAt(1) === " ")){ // Ensures that 11 min does not trigger
-                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle;font-size: small;'>"+data["ArrivalTime"][i]+"</td>"
                                     } else {
-                                        var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                        var html_arrivalTime = "<td style = 'vertical-align: middle;font-size: small;'>"+data["ArrivalTime"][i]+"</td>"
                                     }
                                     text +="<tr>"
-                                    +"<td style = 'vertical-align: middle;position:sticky;position: -webkit-sticky;left:0;opacity:0.8;z-index:4000; background: #000'>"+data["Services"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["Packages"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["Direction"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;position:sticky;position: -webkit-sticky;left:0;opacity:0.8;z-index:4000; background: darkblue;font-size: small;'>"+data["Services"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Packages"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Direction"][i]+"</td>"
                                     +html_arrivalTime
-                                    +"<td style = 'vertical-align: middle'>"+data["AM_Peak_Freq"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["AM_Offpeak_Freq"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["PM_Peak_Freq"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["PM_Offpeak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Peak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Offpeak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Peak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Offpeak_Freq"][i]+"</td>"
                                     +"</tr>"
                                     +"</tbody>"
                                 }

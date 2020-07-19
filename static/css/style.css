@@ -32,6 +32,7 @@ html {
 #side-bar {
     opacity: 0.8;
     width:100%;
+    background-color: #343a40;
 }
 #mapdiv {
     height: 85vh;
@@ -94,6 +95,9 @@ html {
     overflow: scroll;
     max-width: 40em;
     max-height: 20em;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
 }
 
 #divProject4 {
@@ -102,6 +106,7 @@ html {
     top: 0em;
     border: 2px solid grey;
     border-radius: 5px;
+    background-color: tan;
 }
 
 #Time_FilterBS {
