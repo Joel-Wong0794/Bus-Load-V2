@@ -1,5 +1,6 @@
 html {
-      background-color: #343a40
+      background-color: #343a40;
+      position: fixed;
 }
 
 #loader {
@@ -41,7 +42,6 @@ html {
     bottom: 0px;
     top: 7vh;
     position: fixed;
-    position: -webkit-sticky;
 }
 
 #navbar{
@@ -50,7 +50,6 @@ html {
     width:100%;
     position: fixed;
     z-index: 4000;
-    position: -webkit-sticky;
 }
 
 #overallRow {
