@@ -4,7 +4,7 @@ html {
 }
 
 body{
-    position:relative;
+    position:fixed;
     background-color: #343a40;
 }
 
@@ -58,8 +58,9 @@ body{
 }
 
 #overallRow {
-    height: 85vh;
     width:100%;
+    position:fixed;
+
 }
 .col-xs-12,.col-xs-6,.col-xs-4{
     padding:3px
