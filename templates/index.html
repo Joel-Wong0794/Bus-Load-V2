@@ -160,7 +160,7 @@
                     </div>
                     <div id="divProject3" class="col-xs-12">
                         <!-- DROP-DOWN LIST (TIme of Day) -->
-                        <select id="Time_FilterBS" onchange="Selected_Time(this)">
+                        <select id="Time_FilterBS" class="form-control" onchange="Selected_Time(this)">
                             <!-- <option value="" selected disabled hidden>Choose here</option> -->
                             <option value="5">05:00 to 06:00</option>
                             <option value="6">06:00 to 07:00</option>
@@ -638,6 +638,7 @@
 
                 }  
                 refreshInfo();
+                
                 ctlSidebar.show();
                 ctlSidebar.on('shown', function () {
                     $('#ActivateMenu').html("Close Menu")
@@ -646,15 +647,15 @@
 
             // 6.2) Function: To trigger info update based on BS keyed in.
             function refreshInfo(){
-                
-                // Removes the previous content of the HeatMap and Bus Arrival Elements.    
+                var input = $("#txtFindBS").val(); // Extract User input.
+                document.getElementById("txtFindBS").value = ""; //Clear Input Field.
+                // Removes the previous content of the HeatMap and Bus Arrival Elements. 
                 $("#heatMapLoading").empty();
                 $("#BusArrival_Info").empty();
                 //$('#busStopData_Loading').html("<h5><i>Loading...</i></h5>") // Show loading in place of an empty space.
                 renderLoader(document.querySelector('#busStopData_Loading'));
                 $("#busStopData_Loading").fadeIn("slow")
                 var appdir='/';
-                var input = $("#txtFindBS").val(); // Extract User input.
                 var BSCODE = (input.substring(0,input.indexOf(":",0))) //Trim from 0 to point where ":" is found.
 
                 fetch(`${window.origin}/BusArrival`, {
@@ -847,29 +848,27 @@
             }
 
             // 7) Event Handler
-            // Event handler: When user presses the 'Find Bus Stop' button.
+            // a) Event handler: When user presses the 'Find Bus Stop' button.
             $("#btnFindBS").click(refreshInfo);
 
-            // Radio Button click (Weekends/Holiday or Weekday)
+            // b) Radio Button click (Weekends/Holiday or Weekday)
             $("input[name=fltBS]").click(function(){
-                $("#loader").fadeIn("slow")
+                $("#loader").fadeIn("slow") // Show the loader Div again when running the filter, it will fade out again in the geojson load above.
                 arBSCodes = [];
                 // TIP!!!!
                 // https://stackoverflow.com/questions/42862370/refresh-marker-clusters-after-geojson-layer-has-changed
                 lyrMarkerCluster.clearLayers(); // Clear MarkerCluster Layer First
                 ridership_geoJson.refresh(); // Then refresh point, otherwise the old marker will remain
-                $("#loader").fadeOut("slow")
-                //clearLoader();
             });
 
+            // c) When the time period drop-down list is changed.
             $("#Time_FilterBS").on("change", function(e) {
-                $("#loader").fadeIn("slow")
+                $("#loader").fadeIn("slow") // Show the loader Div again when running the filter, it will fade out again in the geojson load above.
                 arBSCodes = [];
                 // TIP!!!!
                 // https://stackoverflow.com/questions/42862370/refresh-marker-clusters-after-geojson-layer-has-changed
                 lyrMarkerCluster.clearLayers(); // Clear MarkerCluster Layer First
                 ridership_geoJson.refresh(); // Then refresh point, otherwise the old marker will remain
-                $("#loader").fadeOut("slow")
             });
 
             // ---------------------------------------------------------------------------
