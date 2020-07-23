@@ -92,7 +92,11 @@ def BusArrival_Function():
 
         Svc_Raw = ArriveLah_Raw_BusArrival["services"][i]["no"]
 
-        LoopDes_Raw = BusSvcFreq_List[BusSvcFreq_List["SvcNo_Dest"]==str(Svc_Raw)+"_"+str(Direction_Code)]["LoopDes"].values[0]
+        try:
+            LoopDes_Raw = BusSvcFreq_List[BusSvcFreq_List["SvcNo_Dest"]==str(Svc_Raw)+"_"+str(Direction_Code)]["LoopDes"].values[0]
+        except IndexError:
+            LoopDes_Raw = ""
+
         if (isinstance(LoopDes_Raw, str)):
             LoopDes_List.append(LoopDes_Raw)
         else:

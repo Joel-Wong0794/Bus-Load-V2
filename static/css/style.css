@@ -151,3 +151,19 @@ body{
 }
 
 tr:hover {background-color:#000000;}
+
+.loader {
+    margin: 5rem auto;
+    text-align: center; }
+    .loader svg {
+      height: 5.5rem;
+      width: 5.5rem;
+      fill: #F59A83;
+      transform-origin: 44% 50%;
+      animation: rotate 1.5s infinite linear; }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0); }
+    100% {
+      transform: rotate(360deg); } }

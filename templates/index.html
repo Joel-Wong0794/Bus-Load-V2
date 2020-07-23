@@ -267,6 +267,32 @@
 
             var preloader = document.getElementById('loader');
             
+            //----------------------------
+            // Loader Functions
+            //----------------------------
+            const elementStrings = {
+                loader:'loader'
+            }
+            
+            // Lecture 145) loading spinner
+            const renderLoader = (parent) => {
+                const loader = `
+                    <div class = "${elementStrings.loader}">
+                        <svg>
+                            <use href ="../static/img/icons.svg#icon-cw"></use>
+                        </svg>
+                    </div>
+                `;
+                parent.insertAdjacentHTML('afterbegin',loader);
+            }
+            
+            const clearLoader = () => {
+                const loader = document.querySelector(`.${elementStrings.loader}`);
+                if (loader) loader.parentElement.removeChild(loader);
+            }
+
+            //----------------------------
+
             // Programmatically Obtain Selected Time.
             // https://stackoverflow.com/questions/78932/how-do-i-programmatically-set-the-value-of-a-select-box-element-using-javascript
             function selectElement(id, valueToSelect) {    
@@ -623,7 +649,8 @@
                 // Removes the previous content of the HeatMap and Bus Arrival Elements.    
                 $("#heatMapLoading").empty();
                 $("#BusArrival_Info").empty();
-                $('#busStopData_Loading').html("<h5><i>Loading...</i></h5>") // Show loading in place of an empty space.
+                //$('#busStopData_Loading').html("<h5><i>Loading...</i></h5>") // Show loading in place of an empty space.
+                renderLoader(document.querySelector('#busStopData_Loading'));
 
                 var appdir='/';
                 var input = $("#txtFindBS").val(); // Extract User input.
@@ -709,7 +736,6 @@
                             // https://stackoverflow.com/questions/15811653/table-with-fixed-header-and-fixed-column-on-pure-css
                             document.getElementById("BusArrival_Info").innerHTML = "<table style='width:100%' class='table table-striped table-dark table-bordered table-sm'>"+text+"</table>";
                             // document.getElementById("BusArrival_Info").innerHTML = "<table>"+text+"</table>";
-                            $('#busStopData_Loading').html("<h5><i>Loading.........</i></h5>") // Show loading in place of an empty space.
 
                             // Plotly z list -  based on BSCODE selected
                             var z_list = [];
@@ -778,6 +804,7 @@
                             };
                             var config = {responsive: true,displayModeBar: false}
                             $('#busStopData_Loading').html("") // Make empty the loading div now that the Heatmap and Bus Arrival Table have completed loading.
+                            clearLoader();
                             Plotly.newPlot('heatMapLoading', plot_data,layout,config);
                         })
                     })
