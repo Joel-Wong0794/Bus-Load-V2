@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <activity
+            android:windowSoftInputMode="adjustPan"> 
+        </activity>
         <meta charset="UTF-8">
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
@@ -52,7 +55,6 @@
         <!-- Plot.js -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-
     </head>
     <body>
         <div id="loader"></div>
@@ -82,7 +84,7 @@
                         </div>
                         <div class="" id="divBSData"></div>
                         <div id="heatMapLoading"></div>
-                        <div id = "BusArrival_Info"></div>
+                        <div id = "BusArrival_Info" class="container"></div>
                         <div id="busStopData_Loading">
                             <h6></h6>
                         </div>
@@ -264,23 +266,6 @@
             var layer_Routes
 
             var preloader = document.getElementById('loader');
-
-            
-            // Async to store large ridership geojson data.
-            function httpGetAsync(theUrl, callback) {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function() {
-                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                        callback(JSON.parse(xmlHttp.responseText));
-                        /*
-                        if (callback) {
-                            callback(data);
-                        }  
-                        */  
-                }
-                xmlHttp.open("GET", theUrl, true); // true for asynchronous
-                xmlHttp.send(null);
-            }
             
             // Programmatically Obtain Selected Time.
             // https://stackoverflow.com/questions/78932/how-do-i-programmatically-set-the-value-of-a-select-box-element-using-javascript
@@ -290,6 +275,18 @@
             }
             // j-Query - Only create map once div has been created.
             $(document).ready(function(){
+
+                /* Updating Div height size */
+                // Ensures fixed Div sizes when keyboard is invoked.
+                // Link: https://stackoverflow.com/questions/43702979/mobile-keyboard-pushes-up-content-because-of-an-absolutely-positioned-drawer
+                var windowHeight = $(window).innerHeight();
+                $('html, body').css({'height':windowHeight});
+                
+                $('#mapdiv').css({'height':windowHeight*0.93,'top':windowHeight*0.07});
+                $('#navbar').css({'height':windowHeight*0.07});
+                
+                
+                /* ... */
 
                 //----------------------------------------------------
                 // Map Initialisation
@@ -395,10 +392,22 @@
                 });
                 // ***** Sidebar V1 *****
                 ctlSidebar = L.control.sidebar('side-bar',{closeButton:false,autoPan:false}).addTo(mymap);
-                ctlMeasure = L.control.polylineMeasure().addTo(mymap);
+                ctlMeasure = L.control.polylineMeasure(options={
+                    position: 'topright',
+                    measureControlLabel: '&#128207;'
+                    
+                }).addTo(mymap);
 
                 // ***** OpenCage Search Location *****
-                ctlSearch = L.Control.openCageSearch({key:'17d0c3cd10484522b857c1814cd9df16',limit:10}).addTo(mymap); // Key is from OpenCage account: NightFury555 GitHub Account.
+                ctlSearch = L.Control.openCageSearch({
+                    key:'17d0c3cd10484522b857c1814cd9df16',
+                    limit:10,
+                    collapsed: false,
+                    expand: 'click',
+                    position:'topleft',
+                    showResultIcons: true,
+                    placeholder: 'Search Location',
+                }).addTo(mymap); // Key is from OpenCage account: NightFury555 GitHub Account.
                 
                 // ***** LOCATION CONTROL *****
                 // When location is found.
@@ -653,33 +662,53 @@
                                         var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][0]+"</td>"
                                     }
                                     // To register header and the first row
-                                    text +="<tr>"+"<th style='min-width:80px'>Services</th>"+"<th style='min-width:80px'>Contract</th>"+"<th style='min-width:80px'>Direction</th>"+"<th style='min-width:80px'>Arrival</th>"+"</tr>"
+                                    text +="<thead>"+"<tr>"
+                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;left:0;opacity:0.8;z-index:4002;background: #000;font-size: small;vertical-align: middle' >Services</th>"
+                                        +"<th style='min-width:80px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Contract</th>"
+                                        +"<th style='min-width:120px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Direction</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Arrival</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>AM Peak</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>Offpeak</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>PM Peak</th>"
+                                        +"<th style='min-width:85px;position:sticky;position: -webkit-sticky;top:0;opacity:0.8;z-index:4001; background: #000;font-size: small;vertical-align: middle'>Freq:<br>PM Offpeak</th>"+"</tr>" 
+                                        + "</thead>"
+                                        +"<tbody style = ''>"
                                         +"<tr>"
-                                        +"<td style = 'vertical-align: middle'>"+data["Services"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["Packages"][0]+"</td>"
-                                        +"<td style = 'vertical-align: middle'>"+data["Direction"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;position:sticky;position: -webkit-sticky;left:0;opacity:0.8;z-index:4000; background: darkblue;font-size: small;'>"+data["Services"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Packages"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Direction"][0]+"</td>"
                                         +html_arrivalTime
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Peak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Offpeak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Peak_Freq"][0]+"</td>"
+                                        +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Offpeak_Freq"][0]+"</td>"
                                         +"</tr>"
                                 }else{
                                     var arrivalTime = data["ArrivalTime"][i];
                                     if (arrivalTime.includes("ARR")){
-                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                        var html_arrivalTime = "<td style='background:mediumvioletred;vertical-align: middle;font-size: small;'>"+data["ArrivalTime"][i]+"</td>"
                                     } else if ((arrivalTime.includes("1 min")&& arrivalTime.charAt(1) === " ")){ // Ensures that 11 min does not trigger
-                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                        var html_arrivalTime = "<td style='background:palevioletred;vertical-align: middle;font-size: small;'>"+data["ArrivalTime"][i]+"</td>"
                                     } else {
-                                        var html_arrivalTime = "<td style = 'vertical-align: middle'>"+data["ArrivalTime"][i]+"</td>"
+                                        var html_arrivalTime = "<td style = 'vertical-align: middle;font-size: small;'>"+data["ArrivalTime"][i]+"</td>"
                                     }
                                     text +="<tr>"
-                                    +"<td style = 'vertical-align: middle'>"+data["Services"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["Packages"][i]+"</td>"
-                                    +"<td style = 'vertical-align: middle'>"+data["Direction"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;position:sticky;position: -webkit-sticky;left:0;opacity:0.8;z-index:4000; background: darkblue;font-size: small;'>"+data["Services"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Packages"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["Direction"][i]+"</td>"
                                     +html_arrivalTime
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Peak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["AM_Offpeak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Peak_Freq"][i]+"</td>"
+                                    +"<td style = 'vertical-align: middle;font-size: small;'>"+data["PM_Offpeak_Freq"][i]+"</td>"
                                     +"</tr>"
+                                    +"</tbody>"
                                 }
 
                             }
+                            // https://stackoverflow.com/questions/15811653/table-with-fixed-header-and-fixed-column-on-pure-css
                             document.getElementById("BusArrival_Info").innerHTML = "<table style='width:100%' class='table table-striped table-dark table-bordered table-sm'>"+text+"</table>";
-                            
+                            // document.getElementById("BusArrival_Info").innerHTML = "<table>"+text+"</table>";
                             $('#busStopData_Loading').html("<h5><i>Loading.........</i></h5>") // Show loading in place of an empty space.
 
                             // Plotly z list -  based on BSCODE selected
