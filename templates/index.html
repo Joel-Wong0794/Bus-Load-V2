@@ -344,16 +344,17 @@
                 // LAYER Initialisation
                 //----------------------------------------------------
                 lyrOSM = L.tileLayer.provider('OpenStreetMap.Mapnik')
+                /*
                 lyrOneMapDefault = L.tileLayer.provider('OneMapSG.Default')
                 lyrTopo = L.tileLayer.provider('OpenTopoMap')
                 lyrImagery = L.tileLayer.provider('Esri.WorldImagery')
                 lyrTransport = L.tileLayer.provider('Thunderforest.Transport') // Add API key in 
+                */
                 mymap.addLayer(lyrOSM);  // Initial Map
                 //----------------------------------------------------
 
                 // ----------------------------------------------------------------------------------
                 // LAYERS
-                // NOTE: Remember to run on live server.
                 // ----------------------------------------------------------------------------------
 
                 // Layer 1: Ridership
@@ -645,13 +646,13 @@
 
             // 6.2) Function: To trigger info update based on BS keyed in.
             function refreshInfo(){
-               
+                
                 // Removes the previous content of the HeatMap and Bus Arrival Elements.    
                 $("#heatMapLoading").empty();
                 $("#BusArrival_Info").empty();
                 //$('#busStopData_Loading').html("<h5><i>Loading...</i></h5>") // Show loading in place of an empty space.
                 renderLoader(document.querySelector('#busStopData_Loading'));
-
+                $("#busStopData_Loading").fadeIn("slow")
                 var appdir='/';
                 var input = $("#txtFindBS").val(); // Extract User input.
                 var BSCODE = (input.substring(0,input.indexOf(":",0))) //Trim from 0 to point where ":" is found.
@@ -851,19 +852,24 @@
 
             // Radio Button click (Weekends/Holiday or Weekday)
             $("input[name=fltBS]").click(function(){
+                $("#loader").fadeIn("slow")
                 arBSCodes = [];
                 // TIP!!!!
                 // https://stackoverflow.com/questions/42862370/refresh-marker-clusters-after-geojson-layer-has-changed
                 lyrMarkerCluster.clearLayers(); // Clear MarkerCluster Layer First
                 ridership_geoJson.refresh(); // Then refresh point, otherwise the old marker will remain
+                $("#loader").fadeOut("slow")
+                //clearLoader();
             });
 
             $("#Time_FilterBS").on("change", function(e) {
+                $("#loader").fadeIn("slow")
                 arBSCodes = [];
                 // TIP!!!!
                 // https://stackoverflow.com/questions/42862370/refresh-marker-clusters-after-geojson-layer-has-changed
                 lyrMarkerCluster.clearLayers(); // Clear MarkerCluster Layer First
                 ridership_geoJson.refresh(); // Then refresh point, otherwise the old marker will remain
+                $("#loader").fadeOut("slow")
             });
 
             // ---------------------------------------------------------------------------
