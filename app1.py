@@ -5,8 +5,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 import pandas as pd
 import json
 
-# DB
-import db
+# For MongoDB
+from flask_pymongo  import pymongo
 
 # Import Python Modules
 from modules.BusArrival_Modules import BusArrival_LTA,ArriveLah,BusStopList_df
@@ -55,6 +55,11 @@ elif app.config["ENV"] == "development":
     # CONFIG IMPORTS
     app.config.from_object("config.DevelopmentConfig")
 
+# MONGO DB
+CONNECTION_STRING = app.config["DB_NAME"]
+client = pymongo.MongoClient(CONNECTION_STRING)
+db = client.get_database('GISData-Test1')
+user_collection = pymongo.collection.Collection(db, 'GISData-Test1')
 
 #-------------------------------------------
 # B) HOME PAGE - Map
@@ -208,10 +213,7 @@ def BusArrival_Function():
 #-------------------------------------------
 @app.route('/AddData', methods=['POST'])
 def flask_mongodb_atlas():
-    app.config['SECRET_KEY'] = "adasdasdasd"
-    print(app.config['SECRET_KEY'])
     req = request.get_json() # When /AddData receives POST.
-    print(req)
     req['comments'] = "Getting via /AddData"
     print(req)
     db.db.collection.insert_one(req)
