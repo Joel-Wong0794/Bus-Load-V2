@@ -167,3 +167,9 @@ tr:hover {background-color:#000000;}
       transform: rotate(0); }
     100% {
       transform: rotate(360deg); } }
+
+#CommentsMenu{
+    position: absolute;
+    top: 120px;
+    left: 90%;
+}

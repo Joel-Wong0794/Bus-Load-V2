@@ -43,11 +43,25 @@ df_BusStop = BusStopList_df()
 # Start App
 app = Flask(__name__)
 
+# How to set config variables: https://www.youtube.com/watch?v=GW_2O9CrnSU
+# CHANGE CONFIG based on 
+if app.config["ENV"] == "production":
+    # CONFIG IMPORTS
+    app.config.from_object("config.ProductionConfig")
+elif app.config["ENV"] == "testing":
+    # CONFIG IMPORTS
+    app.config.from_object("config.TestingConfig")
+elif app.config["ENV"] == "development":
+    # CONFIG IMPORTS
+    app.config.from_object("config.DevelopmentConfig")
+
+
 #-------------------------------------------
 # B) HOME PAGE - Map
 #-------------------------------------------
 @app.route('/')
 def index():
+    print(app.config["ENV"])
     return render_template('index.html')
 
 #-------------------------------------------
@@ -194,11 +208,14 @@ def BusArrival_Function():
 #-------------------------------------------
 @app.route('/AddData', methods=['POST'])
 def flask_mongodb_atlas():
+    app.config['SECRET_KEY'] = "adasdasdasd"
+    print(app.config['SECRET_KEY'])
     req = request.get_json() # When /AddData receives POST.
     print(req)
     req['comments'] = "Getting via /AddData"
     print(req)
     db.db.collection.insert_one(req)
+    return ""
 
 
 if __name__ == '__main__':
