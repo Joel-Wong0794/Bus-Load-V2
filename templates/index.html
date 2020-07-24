@@ -63,6 +63,7 @@
         </div> -->
         <nav id="navbar" class="navbar navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Bus Ridership (Jun 2020)</a>
+            <button id="CommentsMenu" type="button" class="btn btn-info ssm-toggle-nav">Add Comments</button>
             <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Open Menu</button>
         </nav>
 
@@ -211,7 +212,7 @@
                         <button id="btnDistrictFilter" class="btn btn-warning btn-block">Filter District!</button>
                     </div>
                 </div>
-
+                <div id= "side-bar-right" class = "col-md-12"></div>
             </div> 
             
             <div id = "mapdiv" class = "col-md-12">
@@ -240,6 +241,7 @@
             var ctlMeasure; // PolylineMeasure: https://github.com/ppete2/Leaflet.PolylineMeasure
             var ctlSidebar; // SideBar v1: https://github.com/turbo87/leaflet-sidebar/
             var ctlSearch; // OpenCageSearch: https://github.com/OpenCageData/leaflet-opencage-search
+            var ctlSidebar_Comments;
             // Leaflet Draw Plug-in
             var ctlDraw; // Leaflet Draw: https://github.com/Leaflet/Leaflet.draw
             // Leaflet Style Editor Plug-in
@@ -417,8 +419,21 @@
                         $('#ActivateMenu').html("Open Menu")
                     });
                 });
+                // Menu Toggle to activate sidebar-right
+                $("#CommentsMenu").click(function(){
+                    ctlSidebar_Comments.toggle();
+                    // If Menu is already shown, make the button show text: "Close Menu"
+                    ctlSidebar_Comments.on('shown', function () {
+                        //$('#ActivateMenu').html("Close Menu")
+                    });
+                    // If Menu is NOT already shown, make the button show text: "Open Menu"
+                    ctlSidebar_Comments.on('hidden', function () {
+                        //$('#ActivateMenu').html("Open Menu")
+                    });
+                });
                 // ***** Sidebar V1 *****
-                ctlSidebar = L.control.sidebar('side-bar',{closeButton:false,autoPan:false}).addTo(mymap);
+                ctlSidebar = L.control.sidebar('side-bar',{position:'left',closeButton:false,autoPan:false}).addTo(mymap);
+                ctlSidebar_Comments = L.control.sidebar('side-bar-right',{position:'right',closeButton:false,autoPan:false}).addTo(mymap);
                 ctlMeasure = L.control.polylineMeasure(options={
                     position: 'topright',
                     measureControlLabel: '&#128207;'
@@ -657,6 +672,18 @@
                 $("#busStopData_Loading").fadeIn("slow")
                 var appdir='/';
                 var BSCODE = (input.substring(0,input.indexOf(":",0))) //Trim from 0 to point where ":" is found.
+
+                fetch(`${window.origin}/AddData`, {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify({
+                        BSCODE:BSCODE
+                    }),
+                    cache: "no-cache",
+                    headers: new Headers({
+                        "content-type": "application/json"
+                    })
+                })
 
                 fetch(`${window.origin}/BusArrival`, {
                     method: "POST",

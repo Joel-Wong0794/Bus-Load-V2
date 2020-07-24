@@ -5,6 +5,9 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 import pandas as pd
 import json
 
+# DB
+import db
+
 # Import Python Modules
 from modules.BusArrival_Modules import BusArrival_LTA,ArriveLah,BusStopList_df
 # ------------------------
@@ -59,7 +62,10 @@ def BusArrival_Function():
     #-------------------------------------------
     req = request.get_json() # When /BusArrival receives POST.
     print(req)
-    
+    # # TESTING - Adding Data to Database
+    # req['comments'] = "Testing Comments"
+    # db.db.collection.insert_one(req)
+
     # Using Bus Arrival - LTA API
     # Note: To obtain Destination.
     LTA_Raw_BusArrival = BusArrival_LTA(req["BSCODE"])
@@ -135,6 +141,7 @@ def BusArrival_Function():
     df_BusArrival.sort_values(["Contract"],inplace = True,ascending=True)
 
     print(df_BusArrival)
+
     # Convert to lists
     Service_List = df_BusArrival["Services"].to_list()
     ArrivalTime_List = df_BusArrival["ArrivalTime"].to_list()
@@ -181,6 +188,17 @@ def BusArrival_Function():
     #-------------------------------------------
 
     return res # Return back to JavaScript for Bus Arrival Data for selected BSCode.
+
+#-------------------------------------------
+# D) MONGODB Link Route
+#-------------------------------------------
+@app.route('/AddData', methods=['POST'])
+def flask_mongodb_atlas():
+    req = request.get_json() # When /AddData receives POST.
+    print(req)
+    req['comments'] = "Getting via /AddData"
+    print(req)
+    db.db.collection.insert_one(req)
 
 
 if __name__ == '__main__':
