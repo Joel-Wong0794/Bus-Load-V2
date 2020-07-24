@@ -4,7 +4,8 @@ import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 import pandas as pd
 import json
-
+from datetime import datetime
+from datetime import timedelta  
 # For MongoDB
 from flask_pymongo  import pymongo
 
@@ -57,11 +58,9 @@ elif app.config["ENV"] == "development":
 
 # MONGO DB
 CONNECTION_STRING = app.config["DB_NAME"]
-print(CONNECTION_STRING)
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('GISData-Test1')
-user_collection = pymongo.collection.Collection(db, 'GISData-Test1')
-
+user_collection = pymongo.collection.Collection(db, app.config["DB_COLLECTION"]) # Goes down to specific collection
 #-------------------------------------------
 # B) HOME PAGE - Map
 #-------------------------------------------
@@ -215,9 +214,13 @@ def BusArrival_Function():
 @app.route('/AddData', methods=['POST'])
 def flask_mongodb_atlas():
     req = request.get_json() # When /AddData receives POST.
+    # dd/mm/YY H:M:S
+    now = datetime.now() + timedelta(hours=8)
+    dt_string = '{:%d/%m/%Y (%H:%M:%S)}'.format(now)
+    req['dt_string'] = dt_string
     req['comments'] = "Getting via /AddData"
     print(req)
-    db.db.collection.insert_one(req)
+    user_collection.insert_one(req) # Drills down to specific collection
     return ""
 
 
