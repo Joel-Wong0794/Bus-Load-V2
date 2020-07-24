@@ -57,6 +57,7 @@ elif app.config["ENV"] == "development":
 
 # MONGO DB
 CONNECTION_STRING = app.config["DB_NAME"]
+print(CONNECTION_STRING)
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('GISData-Test1')
 user_collection = pymongo.collection.Collection(db, 'GISData-Test1')
