@@ -62,7 +62,7 @@
             <img src="{{ url_for('static', filename='img/loading-gif2.gif')}}" alt="loading...">
         </div> -->
         <nav id="navbar" class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Bus Ridership (Jun 2020)</a>
+            <a class="navbar-brand" href="#">Bus Ridership (Jul 2020)</a>
             <button id="ActivateMenu" type="button" class="btn btn-info ssm-toggle-nav">Open Menu</button>
         </nav>
 
@@ -359,7 +359,7 @@
 
                 // Layer 1: Ridership
                 lyrMarkerCluster = L.markerClusterGroup({ disableClusteringAtZoom: 16 });
-                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data_Jun2020.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
+                ridership_geoJson = L.geoJSON.ajax("{{url_for('static', filename='/data/LTAMall_Ridership_Data_Jul2020.geojson')}}", {pointToLayer:returnBusStopMarker,filter:filterBusStopTimePeriod});
                 ridership_geoJson.on('data:loaded',function(){ // once data loaded
                     arBSCodes.sort();
                     $("#loader").fadeOut("slow");//Loading Animation
