@@ -16,7 +16,7 @@ from modules.BusArrival_Modules import BusArrival_LTA,ArriveLah,BusStopList_df
 # ! Update Name of files Here !
 # ------------------------
 # Name: 1) BusService List with Frequency
-period = "Jul2020"
+period = "Aug2020"
 name_BusSvcFreq_List = "BusServices_Excel (as of 2020-07-17).xlsx"
 name_ridership_data = "LTAMall_Ridership_Data_"+period+".geojson"
 # ------------------------
